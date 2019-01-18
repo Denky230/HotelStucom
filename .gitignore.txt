@@ -1,0 +1,2 @@
+/nbcproject/private
+/data
