@@ -1,5 +1,5 @@
 
-package auxiliar.commands;
+package input.commands;
 
 import java.io.IOException;
 
