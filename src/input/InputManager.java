@@ -3,6 +3,7 @@ package input;
 
 import input.commands.Command;
 import input.commands.AddRoom;
+import input.commands.AddWorker;
 import input.commands.SetSpeed;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,7 +19,6 @@ public class InputManager {
             instance = new InputManager();
             initCommands();
         }
-        
         return instance;
     }
     private InputManager() { }
@@ -32,7 +32,8 @@ public class InputManager {
 
         // Add supported commands
         commands.add(new SetSpeed(1, "SPEED"));
-        commands.add(new AddRoom(1, "ROOM"));
+        commands.add(new AddRoom(3, "ROOM"));
+        commands.add(new AddWorker(3, "WORKER"));
     }
 
     public void processInput(String input) throws IOException {
@@ -48,7 +49,7 @@ public class InputManager {
             // Validate user input as a command
             validateCommand(commandCode, arguments);
     }
-    
+
     public void validateCommand(String callCode, String[] args) throws IOException {
         // Make sure given command exists
         Command c = getCommandByCallCode(callCode);

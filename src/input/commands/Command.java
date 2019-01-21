@@ -4,7 +4,7 @@ package input.commands;
 import java.io.IOException;
 
 public abstract class Command {
- 
+
     private final int ARGUMENTS;
     private final String CALL_CODE;
 

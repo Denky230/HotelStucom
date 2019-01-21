@@ -18,4 +18,18 @@ public class Room {
         this.state = ERoomState.CLEAN;
         this.services = services;
     }
+
+    @Override
+    public String toString() {
+        // Build services string
+        String servicesString = "";
+        StringBuilder sb = new StringBuilder(servicesString);
+        for (EService service : services) {
+            sb.append(service.name()).append("\n");
+        }
+        // Remove last "\n"
+        sb.delete(sb.length() - 1, sb.length());
+
+        return "Room: " + "ID=" + id + ", capacity=" + capacity + ", services=\n" + servicesString;
+    }
 }
