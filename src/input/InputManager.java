@@ -47,18 +47,19 @@ public class InputManager {
             }
 
             // Validate user input as a command
-            validateCommand(commandCode, arguments);
+            Command c = validateCommand(commandCode, arguments);            
+            // Call command with given arguments
+            c.call(arguments);
     }
 
-    public void validateCommand(String callCode, String[] args) throws IOException {
+    private Command validateCommand(String callCode, String[] args) throws IOException {
         // Make sure given command exists
         Command c = getCommandByCallCode(callCode);
         // Make sure number of arguments is correct for given command
         if (c.getArguments() != args.length)
             throw new IOException("Invalid num of args");
 
-        // Call command with given arguments
-        c.call(args);
+        return c;
     }
     private Command getCommandByCallCode(String callCode) throws IOException {
         for (Command command : commands) {
