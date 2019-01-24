@@ -9,25 +9,26 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class InputManager {
+public class InputHandler {
 
-    private static List<Command> commands;
+    private List<Command> commands;
 
-    private static InputManager instance;
-    public static InputManager getInstance() {
+    private InputHandler() {
+        initCommands();
+    }
+    private static InputHandler instance;
+    public static InputHandler getInstance() {
         if (instance == null) {
-            instance = new InputManager();
-            initCommands();
+            instance = new InputHandler();
         }
         return instance;
     }
-    private InputManager() { }
 
     /**
      * Initialize application supported commands.
      * @see Command
      */
-    private static void initCommands() {
+    private void initCommands() {
         commands = new ArrayList<>();
 
         // Add supported commands

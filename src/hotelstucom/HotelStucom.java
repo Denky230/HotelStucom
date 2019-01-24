@@ -1,7 +1,7 @@
 
 package hotelstucom;
 
-import input.InputManager;
+import input.InputHandler;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -13,7 +13,7 @@ public class HotelStucom {
 
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            InputManager in = InputManager.getInstance();
+            InputHandler in = InputHandler.getInstance();
 
             // Read user input
             String line;
