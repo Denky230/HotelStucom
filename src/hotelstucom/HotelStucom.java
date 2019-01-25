@@ -17,13 +17,20 @@ public class HotelStucom {
 
             // Read user input
             String line;
-            while ((line = br.readLine()) != null) {
-                in.processInput(line);
+            while (!(line = br.readLine()).equalsIgnoreCase("X")) {
+                
+                try {
+                    in.processInput(line);
+                    
+                } catch (RuntimeException e) {
+                    e.printStackTrace();
+                }
             }
-
-            Manager.soutRooms();
-            Manager.soutWorkers();
-            Manager.soutSpeed();
+            
+            /* TEST */
+            Manager m = Manager.getInstance();
+            m.soutRooms();
+            m.soutWorkers();
 
         } catch (IOException e) {
             System.out.println(e.getMessage());

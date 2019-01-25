@@ -22,14 +22,13 @@ public class Room {
     @Override
     public String toString() {
         // Build services string
-        String servicesString = "";
-        StringBuilder sb = new StringBuilder(servicesString);
+        StringBuilder sb = new StringBuilder();
         for (EService service : services) {
-            sb.append(service.name()).append("\n");
+            sb.append(service.name()).append(", ");
         }
-        // Remove last "\n"
-        sb.delete(sb.length() - 1, sb.length());
+        // Remove last ","
+        sb.delete(sb.length() - 2, sb.length());
 
-        return "Room: " + "ID=" + id + ", capacity=" + capacity + ", services=\n" + servicesString;
+        return "R: " + "ID=" + id + ", capacity=" + capacity + ", services=\n" + sb;
     }
 }

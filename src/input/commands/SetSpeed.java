@@ -2,7 +2,6 @@
 package input.commands;
 
 import java.io.IOException;
-import management.Manager;
 
 public class SetSpeed extends Command {
 
@@ -12,8 +11,8 @@ public class SetSpeed extends Command {
 
     @Override
     public void call(String[] args) throws IOException {
-        // Set application SPEED
+        // Set application Speed
         int speed = Integer.valueOf(args[0]);
-        Manager.SPEED = speed;
+        manager.setSpeed(speed);
     }
 }

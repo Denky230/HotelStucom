@@ -19,14 +19,13 @@ public class Worker {
     @Override
     public String toString() {
         // Build skills string
-        String skillsString = "";
-        StringBuilder sb = new StringBuilder(skillsString);
+        StringBuilder sb = new StringBuilder();
         for (ESkill skill : skills) {
-            sb.append(skill.name()).append("\n");
+            sb.append(skill.name()).append(", ");
         }
-        // Remove last "\n"
-        sb.delete(sb.length() - 1, sb.length());
+        // Remove last ","
+        sb.delete(sb.length() - 2, sb.length());
 
-        return "Worker: " + "DNI=" + DNI + ", name=" + name + ", skills=\n" + skillsString;
+        return "W: " + "DNI=" + DNI + ", name=" + name + ", skills=\n" + sb;
     }
 }

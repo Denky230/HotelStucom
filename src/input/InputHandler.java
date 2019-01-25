@@ -11,6 +11,7 @@ import java.util.List;
 
 public class InputHandler {
 
+    // Application supported commands
     private List<Command> commands;
 
     private InputHandler() {

@@ -2,11 +2,14 @@
 package input.commands;
 
 import java.io.IOException;
+import management.Manager;
 
 public abstract class Command {
 
     private final int ARGUMENTS;
     private final String CALL_CODE;
+    
+    public static Manager manager = Manager.getInstance();
 
     public Command(int arguments, String callCode) {
         this.ARGUMENTS = arguments;

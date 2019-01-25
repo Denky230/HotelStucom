@@ -1,10 +1,10 @@
 SPEED 2000
-ROOM 001 3 tv,jacuzzi,balcon
-ROOM 002 2 tv,camadoble
-ROOM 003 1 tv,balcon
+ROOM 001 3 tv,jacuzzi,balcony
+ROOM 002 2 tv,doublebed
+ROOM 003 1 tv,balcony
 ROOM 002 4 tv
-WORKER 47888542 Antonio limpieza,mantenimiento
-WORKER 54455478 Rodrigo piscina,mantenimiento,bar
-WORKER 48855632 Maria comida,bar
-RESERVATION 233 1 balcon
+WORKER 47888542 Antonio cleaning,maintenance
+WORKER 54455478 Rodrigo pool,maintenance,bar
+WORKER 48855632 Maria food,bar
+RESERVATION 233 1 balcony
 HOTEL

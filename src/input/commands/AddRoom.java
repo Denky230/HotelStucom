@@ -4,8 +4,6 @@ package input.commands;
 import constants.EService;
 import java.io.IOException;
 import java.util.ArrayList;
-import management.Manager;
-import model.Room;
 
 public class AddRoom extends Command {
 
@@ -19,14 +17,13 @@ public class AddRoom extends Command {
         int capacity = Integer.valueOf(args[1]);
         String servicesStrings[] = args[2].split(",");
 
-        // Add services
+        // Add Services
         ArrayList<EService> services = new ArrayList<>();
         for (String servicesString : servicesStrings) {
             services.add(EService.getValueFromString(servicesString));
         }
 
         // Add new Room
-        Room room = new Room(id, capacity, services);
-        Manager.rooms.add(room);
+        manager.addRoom(id, capacity, services);
     }
 }
