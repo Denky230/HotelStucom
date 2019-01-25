@@ -3,20 +3,33 @@ package model;
 
 import constants.ERoomState;
 import constants.EService;
-import java.util.List;
+import java.util.HashSet;
 
-public class Room {
+public class Room implements Comparable<Room>{
 
     private String id;
     private int capacity;
     private ERoomState state;
-    private List<EService> services;
+    private HashSet<EService> services;
 
-    public Room(String id, int capacity, List<EService> services) {
+    public Room(String id, int capacity, HashSet<EService> services) {
         this.id = id;
         this.capacity = capacity;
         this.state = ERoomState.CLEAN;
         this.services = services;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public int getCapacity() {
+        return capacity;
+    }
+    public ERoomState getState() {
+        return state;
+    }
+    public HashSet<EService> getServices() {
+        return services;
     }
 
     @Override
@@ -30,5 +43,10 @@ public class Room {
         sb.delete(sb.length() - 2, sb.length());
 
         return "R: " + "ID=" + id + ", capacity=" + capacity + ", services=\n" + sb;
+    }
+
+    @Override
+    public int compareTo(Room t) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

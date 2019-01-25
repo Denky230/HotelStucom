@@ -3,7 +3,7 @@ package input.commands;
 
 import constants.ESkill;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class AddWorker extends Command {
 
@@ -18,7 +18,7 @@ public class AddWorker extends Command {
         String skillsStrings[] = args[2].split(",");
 
         // Add Skills
-        ArrayList<ESkill> skills = new ArrayList<>();
+        HashSet<ESkill> skills = new HashSet<>();
         for (String skillString : skillsStrings) {
             skills.add(ESkill.getValueFromString(skillString));
         }

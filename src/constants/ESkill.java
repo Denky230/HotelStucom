@@ -3,7 +3,7 @@ package constants;
 
 public enum ESkill {
     MAINTENANCE, CLEANING, POOL, SPA, BAR, FOOD, LAUNDRY;
-    
+
     public static ESkill getValueFromString(String skill) {
         switch (skill.toUpperCase().trim()) {
             case "MAINTENANCE":

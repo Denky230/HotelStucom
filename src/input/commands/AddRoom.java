@@ -3,7 +3,7 @@ package input.commands;
 
 import constants.EService;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.HashSet;
 
 public class AddRoom extends Command {
 
@@ -15,10 +15,12 @@ public class AddRoom extends Command {
     public void call(String[] args) throws IOException {
         String id = args[0];
         int capacity = Integer.valueOf(args[1]);
-        String servicesStrings[] = args[2].split(",");
+        // Check if Services were input
+        String servicesStrings[] =
+                args.length == 3 ? args[2].split(",") : new String[0];
 
         // Add Services
-        ArrayList<EService> services = new ArrayList<>();
+        HashSet<EService> services = new HashSet<>();
         for (String servicesString : servicesStrings) {
             services.add(EService.getValueFromString(servicesString));
         }

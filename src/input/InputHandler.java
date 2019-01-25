@@ -34,7 +34,7 @@ public class InputHandler {
 
         // Add supported commands
         commands.add(new SetSpeed(1, "SPEED"));
-        commands.add(new AddRoom(3, "ROOM"));
+        commands.add(new AddRoom(2, "ROOM"));
         commands.add(new AddWorker(3, "WORKER"));
     }
 
