@@ -29,8 +29,8 @@ public class HotelStucom {
             
             /* TEST */
             Manager m = Manager.getInstance();
-            m.soutRooms();
-            m.soutWorkers();
+            m.soutFreeWorkers();
+            m.soutAssignments();
 
         } catch (IOException e) {
             System.out.println(e.getMessage());

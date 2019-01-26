@@ -6,17 +6,17 @@ public enum ESkill {
 
     public static ESkill getValueFromString(String skill) {
         switch (skill.toUpperCase().trim()) {
-            case "MAINTENANCE":
+            case "MANTENIMIENTO":
                 return MAINTENANCE;
-            case "CLEANING":
+            case "LIMPIEZA":
                 return CLEANING;
-            case "POOL":
+            case "PISCINA":
                 return POOL;
             case "SPA":
                 return SPA;
             case "BAR":
                 return BAR;
-            case "FOOD":
+            case "COMIDA":
                 return FOOD;
             case "LAUNDRY":
                 return LAUNDRY;

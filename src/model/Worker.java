@@ -5,7 +5,7 @@ import constants.ESkill;
 import java.util.HashSet;
 import java.util.Objects;
 
-public class Worker {
+public class Worker implements Comparable<Worker> {
 
     private String DNI;
     private String name;
@@ -40,9 +40,14 @@ public class Worker {
         return "W: " + "DNI=" + DNI + ", name=" + name + ", skills=\n" + sb;
     }
 
+    @Override
+    public int compareTo(Worker w) {
+        return this.skills.size() - w.skills.size();
+    }
+
     @Override public int hashCode() {
-        int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.DNI);
+        int hash = 3;
+        hash = 71 * hash + Objects.hashCode(this.DNI);
         return hash;
     }
     @Override public boolean equals(Object obj) {
@@ -56,9 +61,6 @@ public class Worker {
             return false;
         }
         final Worker other = (Worker) obj;
-        if (!this.DNI.equalsIgnoreCase(other.DNI)) {
-            return false;
-        }
-        return true;
+        return DNI.equalsIgnoreCase(other.DNI);
     }
 }

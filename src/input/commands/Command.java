@@ -19,5 +19,5 @@ public abstract class Command {
     public int getArguments() { return ARGUMENTS; }
     public String getCallCode() { return this.CALL_CODE; }
 
-    public void call(String args[]) throws IOException {}
+    public void call(String args[]) {}
 }

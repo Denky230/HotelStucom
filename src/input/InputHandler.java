@@ -38,7 +38,7 @@ public class InputHandler {
         commands.add(new AddWorker(3, "WORKER"));
     }
 
-    public void processInput(String input) throws IOException {
+    public void processInput(String input) {
             String[] in = input.split(" ");
 
             // First input is the command call, rest is arguments
@@ -54,20 +54,20 @@ public class InputHandler {
             c.call(arguments);
     }
 
-    private Command validateCommand(String callCode, String[] args) throws IOException {
+    private Command validateCommand(String callCode, String[] args) {
         // Make sure given command exists
         Command c = getCommandByCallCode(callCode);
         // Make sure number of arguments is correct for given command
         if (c.getArguments() != args.length)
-            throw new IOException("Invalid num of args");
+            throw new RuntimeException("Invalid number of arguments");
 
         return c;
     }
-    private Command getCommandByCallCode(String callCode) throws IOException {
+    private Command getCommandByCallCode(String callCode) {
         for (Command command : commands) {
             if (command.getCallCode().equalsIgnoreCase(callCode))
                 return command;
         }
-        throw new IOException("Bad command");
+        throw new RuntimeException("Bad command");
     }
 }

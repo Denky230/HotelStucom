@@ -2,7 +2,6 @@
 package input.commands;
 
 import constants.ESkill;
-import java.io.IOException;
 import java.util.HashSet;
 
 public class AddWorker extends Command {
@@ -12,7 +11,7 @@ public class AddWorker extends Command {
     }
 
     @Override
-    public void call(String[] args) throws IOException {
+    public void call(String[] args) {
         String dni = args[0];
         String name = args[1];
         String skillsStrings[] = args[2].split(",");

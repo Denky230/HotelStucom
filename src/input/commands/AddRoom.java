@@ -2,7 +2,6 @@
 package input.commands;
 
 import constants.EService;
-import java.io.IOException;
 import java.util.HashSet;
 
 public class AddRoom extends Command {
@@ -12,7 +11,7 @@ public class AddRoom extends Command {
     }
 
     @Override
-    public void call(String[] args) throws IOException {
+    public void call(String[] args) {
         String id = args[0];
         int capacity = Integer.valueOf(args[1]);
         // Check if Services were input
