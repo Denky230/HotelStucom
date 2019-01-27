@@ -7,7 +7,7 @@ import model.Customer;
 import model.Room;
 
 /**
- * Sortable by Room.id DESC
+ * Sortable by Room.id
  * @author Denky
  */
 public class Reservation implements Comparable<Reservation> {
@@ -42,6 +42,14 @@ public class Reservation implements Comparable<Reservation> {
         int otherRoomID = Integer.parseInt(o.getRoom().getId());
         
         // Sort by ROOM ID DESCENDING
-        return (roomID - otherRoomID) * -1;
+        return roomID - otherRoomID;
+    }
+
+    @Override
+    public String toString() {
+        String roomID = room.getId();
+        String customerDNI = customer != null ? customer.getDNI() : "";
+
+        return "Room: " + roomID + " - Customer: " + customerDNI;
     }
 }

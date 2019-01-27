@@ -5,7 +5,6 @@ import input.commands.Command;
 import input.commands.AddRoom;
 import input.commands.AddWorker;
 import input.commands.SetSpeed;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,7 +57,7 @@ public class InputHandler {
         // Make sure given command exists
         Command c = getCommandByCallCode(callCode);
         // Make sure number of arguments is correct for given command
-        if (c.getArguments() != args.length)
+        if (c.getArguments() > args.length)
             throw new RuntimeException("Invalid number of arguments");
 
         return c;

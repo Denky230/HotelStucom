@@ -7,6 +7,7 @@ import constants.ESkill;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import model.Room;
@@ -63,9 +64,22 @@ public class Manager {
         Room room = new Room(id, capacity, services);
         validateRoom(room);
 
-        // Add new Room to Reservations
+        // TO DO: Extract
+        // Add new Room to Reservations + free rooms if not a duplicate
         Reservation reservation = new Reservation(room);
-        reservations.add(reservation);
+        if (reservations.add(reservation)) {
+            
+            // Get Room number of Services
+            int numServices = reservation.getRoom().getServices().size();
+            // Add Room to rooms with numServices number of Services
+            if (freeRooms.containsKey(numServices)) {
+                freeRooms.get(numServices).add(room);
+            } else {
+                ArrayList<Room> rooms = new ArrayList<>();
+                freeRooms.put(numServices, rooms);
+                rooms.add(room);
+            }
+        }
     }
     private void validateRoom(Room room) {
         /**
@@ -79,7 +93,7 @@ public class Manager {
         Worker worker = new Worker(dni, name, skills);
         validateWorker(worker);
 
-        // Add new Worker + check for duplicate
+        // Add new Worker if not a duplicate
         if (freeWorkers.add(worker)) {
             // If no duplicate, add Worker to Assignments
             assignments.put(worker, null);
@@ -95,10 +109,22 @@ public class Manager {
     /* TEST */
     public void soutRooms() {
         System.out.println("*** ROOMS ***");
-        for (Reservation reservation : reservations) {
-            Room room = reservation.getRoom();
-            System.out.println(room.toString());
-        }
+        reservations.forEach((Reservation reservation) -> {
+            System.out.println(reservation.toString());
+        });
+        System.out.println();
+    }
+    public void soutFreeRooms() {
+        System.out.println("*** FREE ROOMS ***");
+        freeRooms.forEach((key, value) -> {
+            StringBuilder roomsString = new StringBuilder();
+            value.forEach((Room room) -> {
+                roomsString.append(room.getId()).append(", ");
+            });
+            roomsString.delete(roomsString.length() - 2, roomsString.length());
+            
+            System.out.println(key + " - " + roomsString);
+        });
         System.out.println();
     }
     public void soutAssignments() {

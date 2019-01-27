@@ -8,15 +8,15 @@ public enum EService {
         switch (service.toUpperCase().trim()) {
             case "TV":
                 return TV;
-            case "BALCONY":
+            case "BALCON":
                 return BALCONY;
-            case "DOUBLEBED":
+            case "CAMADOBLE":
                 return DOUBLEBED;
             case "JACUZZI":
                 return JACUZZI;
             case "MINIBAR":
                 return MINIBAR;
-            case "TELEPHONE":
+            case "TELEFONO":
                 return TELEPHONE;
             case "SATELITE":
                 return SATELITE;

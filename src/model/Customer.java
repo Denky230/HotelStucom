@@ -16,6 +16,10 @@ public class Customer {
         this.requirements = requirements;
     }
 
+    public String getDNI() {
+        return this.DNI;
+    }
+    
     @Override
     public String toString() {
         // Build requirements string
