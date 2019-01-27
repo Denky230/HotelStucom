@@ -5,6 +5,10 @@ import constants.ESkill;
 import java.util.HashSet;
 import java.util.Objects;
 
+/**
+ * Comparable by DNI, sortable by skills.size (ESkill[]).
+ * @author Denky
+ */
 public class Worker implements Comparable<Worker> {
 
     private String DNI;

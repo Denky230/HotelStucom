@@ -5,7 +5,7 @@ import constants.ERoomState;
 import constants.EService;
 import java.util.HashSet;
 
-public class Room implements Comparable<Room>{
+public class Room {
 
     private String id;
     private int capacity;
@@ -43,10 +43,5 @@ public class Room implements Comparable<Room>{
         sb.delete(sb.length() - 2, sb.length());
 
         return "R: " + "ID=" + id + ", capacity=" + capacity + ", services=\n" + sb;
-    }
-
-    @Override
-    public int compareTo(Room t) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

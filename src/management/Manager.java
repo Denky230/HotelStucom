@@ -1,45 +1,48 @@
 
 package management;
 
+import auxiliar.Reservation;
 import constants.EService;
 import constants.ESkill;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeMap;
-import model.Customer;
+import java.util.TreeSet;
 import model.Room;
 import model.Worker;
 
 public class Manager {
 
-    // Interval at which Thread will run.
-    private int speed;
+    private int speed;  // Interval at which Thread will run.
 
     // ROOMS
-    private final HashMap<Room, Customer> reservations;
+    private final TreeSet<Reservation> reservations;
     private final TreeMap<Integer, ArrayList<Room>> freeRooms;
     // WORKERS
     private final HashMap<Worker, Room> assignments;
     private final HashSet<Worker> freeWorkers;
 
     /**
+     * --- COLLECTIONS ---
+     * 
      * RESERVATIONS
-     * -    key: ROOM / value: CUSTOMER
+     * -    sorted by ROOM ID
      * 
      * FREE ROOMS
+     * -    sorted by NUM_SERVICES
      * -    key: NUM_SERVICES / value: ROOMS by CAPACITY
      *
      * ASSIGNMENTS
      * -    key: WORKER / value: ROOM
      * 
      * FREE WORKERS
-     * -    by NUM_SKILLS >
+     * 
      **/
 
     private Manager() {
         this.speed = 0;
-        this.reservations = new HashMap<>();
+        this.reservations = new TreeSet<>();
         this.freeRooms = new TreeMap<>();
         this.assignments = new HashMap<>();
         this.freeWorkers = new HashSet<>();
@@ -60,8 +63,9 @@ public class Manager {
         Room room = new Room(id, capacity, services);
         validateRoom(room);
 
-        // Add new Room
-        reservations.put(room, null);
+        // Add new Room to Reservations
+        Reservation reservation = new Reservation(room);
+        reservations.add(reservation);
     }
     private void validateRoom(Room room) {
         /**
@@ -91,7 +95,8 @@ public class Manager {
     /* TEST */
     public void soutRooms() {
         System.out.println("*** ROOMS ***");
-        for (Room room : reservations.keySet()) {
+        for (Reservation reservation : reservations) {
+            Room room = reservation.getRoom();
             System.out.println(room.toString());
         }
         System.out.println();
