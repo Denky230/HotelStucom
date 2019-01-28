@@ -36,7 +36,6 @@ public class HotelStucom {
 
             // SOUT ROOMS
             m.soutRooms();
-//            m.soutFreeRooms();
 
         } catch (IOException e) {
             System.out.println(e.getMessage());

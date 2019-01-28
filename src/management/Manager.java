@@ -1,14 +1,12 @@
 
 package management;
 
-import auxiliar.Reservation;
 import constants.Service;
 import constants.Skill;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import model.Customer;
 import model.Room;
 import model.Worker;
@@ -19,35 +17,14 @@ public class Manager {
     private int money;  // Hotel capital
 
     // ROOMS
-//    private final TreeSet<Reservation> reservations;
-//    private final TreeMap<Integer, ArrayList<Room>> freeRooms;
     private final TreeMap<Room, Customer> reservations; // Rooms sorted by ID
-//    private final TreeSet<Room> freeRooms;
     // WORKERS
     private final HashMap<Worker, Room> assignments;
     private final HashSet<Worker> freeWorkers;
 
-    /**
-     * --- COLLECTIONS ---
-     * 
-     * RESERVATIONS
-     * -    sorted by ROOM ID
-     * 
-     * FREE ROOMS
-     * -    sorted by NUM_SERVICES
-     * -    key: NUM_SERVICES / value: ROOMS by CAPACITY
-     *
-     * ASSIGNMENTS
-     * -    key: WORKER / value: ROOM
-     * 
-     * FREE WORKERS
-     * 
-     **/
-
     private Manager() {
         this.speed = 0;
         this.reservations = new TreeMap<>();
-//        this.freeRooms = new TreeMap<>();
         this.assignments = new HashMap<>();
         this.freeWorkers = new HashSet<>();
     }
@@ -69,22 +46,6 @@ public class Manager {
         if (!reservations.containsKey(room)) {
             reservations.put(room, null);
         }
-
-        // Add new Room to Reservations if not a duplicate
-//        Reservation reservation = new Reservation(room);
-//        if (reservations.add(reservation)) {
-//
-//            // Add Room to free Rooms
-//            int numServices = room.getServices().size();
-//            // Add Room to rooms with numServices number of Services
-//            if (freeRooms.containsKey(numServices)) {
-//                freeRooms.get(numServices).add(room);
-//            } else {
-//                ArrayList<Room> rooms = new ArrayList<>();
-//                freeRooms.put(numServices, rooms);
-//                rooms.add(room);
-//            }
-//        }
     }
     private void validateRoom(Room room) {
         /**
@@ -94,41 +55,40 @@ public class Manager {
          **/
     }
 
-    private void getFreeRooms() {
+    private ArrayList<Room> getFreeRoomsSortedByCapacity() {
         ArrayList<Room> freeRooms = new ArrayList<>();
+        reservations.forEach((Room room, Customer customer) -> {
+            if (customer == null) {
+                freeRooms.add(room);
+            }
+        });
+        
+        ArrayList<Room> freeRoomsByCapacity = sortRoomsByCapacity(freeRooms);
+        return freeRoomsByCapacity;
+    }
+    private ArrayList<Room> sortRoomsByCapacity(ArrayList<Room> rooms) {
+        rooms.sort((o1, o2) -> {
+            return o1.getCapacity() - o2.getCapacity();
+        });
+        return rooms;
     }
 
-//    private Room getRoomByServicesMembers(HashSet<Service> services, int members) {
-//        int requirements = services.size();
-//        for (int i = requirements; i < freeRooms.size(); i++) {
-//            // Get Rooms which number of Services = requirements
-//            ArrayList<Room> rooms = freeRooms.get(i);
-//            TreeMap<Integer, Room> validRooms = getRoomsMatchingServices(rooms, services);
-//            // If any is found, return the one with capacity closest to members
-//            if (!validRooms.isEmpty()) {
-//                for (int j = members; j < validRooms.size(); j++) {
-//                    Room room = validRooms.get(j);
-//                    if (room != null) {
-//                        return room;
-//                    }
-//                }
-//            }
-//        }
-//
-//        throw new RuntimeException("No suitable room found :(");
-//
-//    }
-//    private TreeMap<Integer, Room> getRoomsMatchingServices(ArrayList<Room> rooms, HashSet<Service> services) {
-//        TreeMap<Integer, Room> validRooms = new TreeMap<>();
-//        // Look for Rooms that meet all requirements
-//        for (Room room : rooms) {
-//            // If found, add Room + number of members
-//            if (room.getServices().containsAll(services)) {
-//                validRooms.put(room.getCapacity(), room);
-//            }
-//        }
-//        return null;
-//    }
+    private Room getRoomSuitableForCustomer(Customer customer) {
+        ArrayList<Room> freeRooms = getFreeRoomsSortedByCapacity();
+        HashSet<Service> requirements = customer.getRequirements();
+        int members = customer.getMembers();
+
+        // Look for free Room which capacity >= members and Services == requirements
+        for (int i = members; i < freeRooms.size(); i++) {
+            Room freeRoom = freeRooms.get(i);
+            HashSet<Service> services = freeRoom.getServices();
+            if (services.containsAll(requirements)) {
+                return freeRoom;
+            }
+        }
+        
+        throw new RuntimeException("No suitable room found :(");
+    }
 
     /* --- WORKERS --- */
 
@@ -155,15 +115,15 @@ public class Manager {
 
     public void addCustomer(String dni, int members, HashSet<Service> requirements) {
         // Validate Customer
-        Customer custommer = new Customer(dni, members, requirements);
-        validateCustomer(custommer);
+        Customer customer = new Customer(dni, members, requirements);
+        validateCustomer(customer);
 
-        // Get suitable Room for Customer
-//        Room room = getRoomByServicesMembers(requirements, custommer.getMembers());
-//
-//        if (room != null) {
-//            // TO DO: Add Room to Reservations collection, somehow
-//        }
+        // Get free Room with at least members capacity + meets requirements
+        Room room = getRoomSuitableForCustomer(customer);
+        // Assign Customer to suitable Room
+        if (reservations.get(room) == null) {
+            reservations.put(room, customer);
+        }
     }
     private void validateCustomer(Customer customer) {
         /**
@@ -202,19 +162,6 @@ public class Manager {
         });
         System.out.println();
     }
-//    public void soutFreeRooms() {
-//        System.out.println("*** FREE ROOMS ***");
-//        freeRooms.forEach((key, value) -> {
-//            StringBuilder roomsString = new StringBuilder();
-//            value.forEach((Room room) -> {
-//                roomsString.append(room.getId()).append(", ");
-//            });
-//            roomsString.delete(roomsString.length() - 2, roomsString.length());
-//
-//            System.out.println(key + " - " + roomsString);
-//        });
-//        System.out.println();
-//    }
     public void soutAssignments() {
         System.out.println("*** ASSIGNMENTS ***");
         assignments.forEach((key, value) -> {

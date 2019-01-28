@@ -35,7 +35,7 @@ public class InputHandler {
         commands.add(new SetSpeed(1, "SPEED"));
         commands.add(new AddRoom(2, "ROOM"));
         commands.add(new AddWorker(3, "WORKER"));
-        commands.add(new Reservation(3, "RESERVATION"));
+        commands.add(new Reservation(2, "RESERVATION"));
     }
 
     public void processInput(String input) {
