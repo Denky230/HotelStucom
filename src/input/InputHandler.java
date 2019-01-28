@@ -18,9 +18,8 @@ public class InputHandler {
     }
     private static InputHandler instance;
     public static InputHandler getInstance() {
-        if (instance == null) {
+        if (instance == null)
             instance = new InputHandler();
-        }
         return instance;
     }
 
@@ -50,7 +49,7 @@ public class InputHandler {
             // Validate user input as a command
             Command c = validateCommand(commandCode, arguments);            
             // Call command with given arguments
-            c.call(arguments);
+            c.execute(arguments);
     }
 
     private Command validateCommand(String callCode, String[] args) {
