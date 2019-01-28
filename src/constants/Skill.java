@@ -1,10 +1,10 @@
 
 package constants;
 
-public enum ESkill {
+public enum Skill {
     MAINTENANCE, CLEANING, POOL, SPA, BAR, FOOD, LAUNDRY;
 
-    public static ESkill getValueFromString(String skill) {
+    public static Skill getValueFromString(String skill) {
         switch (skill.toUpperCase().trim()) {
             case "MANTENIMIENTO":
                 return MAINTENANCE;

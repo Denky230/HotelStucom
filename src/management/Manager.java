@@ -2,19 +2,21 @@
 package management;
 
 import auxiliar.Reservation;
-import constants.EService;
-import constants.ESkill;
+import constants.Service;
+import constants.Skill;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import model.Customer;
 import model.Room;
 import model.Worker;
 
 public class Manager {
 
-    private int speed;  // Interval at which Thread will run.
+    private int speed;  // Interval at which Thread will run
+    private int money;  // Hotel capital
 
     // ROOMS
     private final TreeSet<Reservation> reservations;
@@ -54,11 +56,9 @@ public class Manager {
         return instance;
     }
 
-    public void setSpeed(int speed) {
-        this.speed = speed;
-    }
-
-    public void addRoom(String id, int capacity, HashSet<EService> services) {
+    /* --- ROOMS --- */
+    
+    public void addRoom(String id, int capacity, HashSet<Service> services) {
         // Validate Room
         Room room = new Room(id, capacity, services);
         validateRoom(room);
@@ -83,11 +83,40 @@ public class Manager {
     private void validateRoom(Room room) {
         /**
          * TO DO:
-         * Check id has 3 digits
+         * -    Check id has 3 digits
+         * -    Check capacity > 0
          **/
     }
+    
+    private Room getRoomByServices(HashSet<Service> services) {
+        int requirements = services.size();
+ 
+        for (int i = requirements; i < freeRooms.size(); i++) {
+            // Get Rooms which number of Services = requirements
+            ArrayList<Room> rooms = freeRooms.get(i);
+            Room room = getRoomMatchingServices(rooms, services);
+            
+            if (room != null) {
+                return room;
+            }
+        }
+        
+        throw new RuntimeException("No suitable room found :(");
+        
+    }
+    private Room getRoomMatchingServices(ArrayList<Room> rooms, HashSet<Service> services) {
+        // Look for a Room that meets all requirements
+        for (Room room : rooms) {
+            if (room.getServices().containsAll(services)) {
+                return room;
+            }
+        }
+        return null;
+    }
 
-    public void addWorker(String dni, String name, HashSet<ESkill> skills) {
+    /* --- WORKERS --- */
+    
+    public void addWorker(String dni, String name, HashSet<Skill> skills) {
         // Validate Worker
         Worker worker = new Worker(dni, name, skills);
         validateWorker(worker);
@@ -102,9 +131,49 @@ public class Manager {
         /**
          * TO DO:
          * -    Check skills.size > 0
+         * -    Check DNI.length == 9
          */
     }
 
+    /* --- CUSTOMERS --- */
+    
+    public void addCustomer(String dni, int members, HashSet<Service> requirements) {
+        // Validate Customer
+        Customer custommer = new Customer(dni, members, requirements);
+        validateCustomer(custommer);
+        
+        // Get suitable Room for Customer
+        Room room = getRoomByServices(requirements);
+        
+        if (room != null) {
+            // TO DO: Add Room to Reservations collection, somehow
+        }
+    }
+    private void validateCustomer(Customer customer) {
+        /**
+         * TO DO:
+         * -    Check DNI.length == 9
+         * -    Check members > 0
+         */
+    }
+    
+    /* --- HOTEL --- */
+    
+    public int getSpeed() {
+        return this.speed;
+    }
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+    public int getMoney() {
+        return this.money;
+    }
+    public void setMoney(int money) {
+        if (money >= 0) {
+            this.money = money;
+        }
+    }
+    
     /* TEST */
     public void soutRooms() {
         System.out.println("*** ROOMS ***");
@@ -144,5 +213,8 @@ public class Manager {
     }
     public void soutSpeed() {
         System.out.println(speed);
+    }
+    public void soutMoney() {
+        System.out.println(money);
     }
 }

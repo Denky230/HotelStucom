@@ -1,6 +1,6 @@
 
 package constants;
 
-public enum ERoomState {
+public enum RoomState {
     CLEAN, UNCLEAN, BROKEN, RESERVED;
 }

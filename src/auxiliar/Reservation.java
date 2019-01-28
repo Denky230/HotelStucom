@@ -1,7 +1,7 @@
 
 package auxiliar;
 
-import constants.ESkill;
+import constants.Skill;
 import java.util.List;
 import model.Customer;
 import model.Room;
@@ -14,7 +14,7 @@ public class Reservation implements Comparable<Reservation> {
     
     private final Room room;
     private Customer customer;
-    private final List<ESkill> pendingRequests;
+    private final List<Skill> pendingRequests;
 
     public Reservation(Room room) {
         this.room = room;
@@ -28,7 +28,7 @@ public class Reservation implements Comparable<Reservation> {
     public Customer getCustomer() {
         return customer;
     }
-    public List<ESkill> getPendingRequests() {
+    public List<Skill> getPendingRequests() {
         return pendingRequests;
     }
     

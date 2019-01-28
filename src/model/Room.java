@@ -1,21 +1,21 @@
 
 package model;
 
-import constants.ERoomState;
-import constants.EService;
+import constants.RoomState;
+import constants.Service;
 import java.util.HashSet;
 
 public class Room {
 
     private String id;
     private int capacity;
-    private ERoomState state;
-    private HashSet<EService> services;
+    private RoomState state;
+    private HashSet<Service> services;
 
-    public Room(String id, int capacity, HashSet<EService> services) {
+    public Room(String id, int capacity, HashSet<Service> services) {
         this.id = id;
         this.capacity = capacity;
-        this.state = ERoomState.CLEAN;
+        this.state = RoomState.CLEAN;
         this.services = services;
     }
 
@@ -25,23 +25,23 @@ public class Room {
     public int getCapacity() {
         return capacity;
     }
-    public ERoomState getState() {
+    public RoomState getState() {
         return state;
     }
-    public HashSet<EService> getServices() {
+    public HashSet<Service> getServices() {
         return services;
     }
 
     @Override
     public String toString() {
         // Build services string
-        StringBuilder sb = new StringBuilder();
-        for (EService service : services) {
-            sb.append(service.name()).append(", ");
+        StringBuilder servs = new StringBuilder();
+        for (Service service : services) {
+            servs.append(service.name()).append(", ");
         }
         // Remove last ","
-        sb.delete(sb.length() - 2, sb.length());
+        servs.delete(servs.length() - 2, servs.length());
 
-        return "R: " + "ID=" + id + ", capacity=" + capacity + ", services=\n" + sb;
+        return "R: " + "ID=" + id + ", capacity=" + capacity + ", services=\n" + servs;
     }
 }

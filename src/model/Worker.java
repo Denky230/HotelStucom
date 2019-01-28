@@ -1,21 +1,21 @@
 
 package model;
 
-import constants.ESkill;
+import constants.Skill;
 import java.util.HashSet;
 import java.util.Objects;
 
 /**
- * Comparable by DNI, sortable by skills.size (ESkill[]).
+ * Comparable by DNI, sortable by skills.size (Skill[]).
  * @author Denky
  */
 public class Worker implements Comparable<Worker> {
 
     private String DNI;
     private String name;
-    private HashSet<ESkill> skills;
+    private HashSet<Skill> skills;
 
-    public Worker(String DNI, String name, HashSet<ESkill> skills) {
+    public Worker(String DNI, String name, HashSet<Skill> skills) {
         this.DNI = DNI;
         this.name = name;
         this.skills = skills;
@@ -27,7 +27,7 @@ public class Worker implements Comparable<Worker> {
     public String getName() {
         return name;
     }
-    public HashSet<ESkill> getSkills() {
+    public HashSet<Skill> getSkills() {
         return skills;
     }
 
@@ -35,7 +35,7 @@ public class Worker implements Comparable<Worker> {
     public String toString() {
         // Build skills string
         StringBuilder sb = new StringBuilder();
-        for (ESkill skill : skills) {
+        for (Skill skill : skills) {
             sb.append(skill.name()).append(", ");
         }
         // Remove last ","

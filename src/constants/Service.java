@@ -1,10 +1,10 @@
 
 package constants;
 
-public enum EService {
+public enum Service {
     TV, BALCONY, DOUBLEBED, JACUZZI, MINIBAR, TELEPHONE, SATELITE, SWEET;
 
-    public static EService getValueFromString(String service) {
+    public static Service getValueFromString(String service) {
         switch (service.toUpperCase().trim()) {
             case "TV":
                 return TV;

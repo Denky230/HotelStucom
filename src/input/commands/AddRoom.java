@@ -1,7 +1,7 @@
 
 package input.commands;
 
-import constants.EService;
+import constants.Service;
 import java.util.HashSet;
 
 public class AddRoom extends Command {
@@ -14,7 +14,7 @@ public class AddRoom extends Command {
     public void call(String[] args) {
         String id = args[0];
         int capacity = Integer.valueOf(args[1]);
-        HashSet<EService> services = new HashSet<>();
+        HashSet<Service> services = new HashSet<>();
                 
         // Add Services if any was input
         if (args.length == 3) {
@@ -22,7 +22,7 @@ public class AddRoom extends Command {
             
             // Add Services
             for (String servicesString : servicesStrings) {
-                services.add(EService.getValueFromString(servicesString));
+                services.add(Service.getValueFromString(servicesString));
             }
         }
 

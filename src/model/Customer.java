@@ -1,16 +1,16 @@
 
 package model;
 
-import constants.EService;
-import java.util.List;
+import constants.Service;
+import java.util.HashSet;
 
 public class Customer {
 
     private String DNI;
     private int members;
-    private List<EService> requirements;
+    private HashSet<Service> requirements;
 
-    public Customer(String DNI, int members, List<EService> requirements) {
+    public Customer(String DNI, int members, HashSet<Service> requirements) {
         this.DNI = DNI;
         this.members = members;
         this.requirements = requirements;
@@ -19,18 +19,23 @@ public class Customer {
     public String getDNI() {
         return this.DNI;
     }
+    public int getMembers() {
+        return this.members;
+    }
+    public HashSet<Service> getRequirements() {
+        return requirements;
+    }
     
     @Override
     public String toString() {
         // Build requirements string
-        String requirementsString = "";
-        StringBuilder sb = new StringBuilder(requirementsString);
-        for (EService requirement : requirements) {
-            sb.append(requirement.name()).append("\n");
+        StringBuilder reqs = new StringBuilder();
+        for (Service requirement : requirements) {
+            reqs.append(requirement.name()).append("\n");
         }
         // Remove last "\n"
-        sb.delete(sb.length() - 1, sb.length());
+        reqs.delete(reqs.length() - 1, reqs.length());
 
-        return "Customer: " + "DNI=" + DNI + ", members=" + members + ", requirements=\n" + requirementsString;
+        return "Customer: " + "DNI=" + DNI + ", members=" + members + ", requirements=\n" + reqs;
     }
 }
