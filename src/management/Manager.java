@@ -19,8 +19,10 @@ public class Manager {
     private int money;  // Hotel capital
 
     // ROOMS
-    private final TreeSet<Reservation> reservations;
-    private final TreeMap<Integer, ArrayList<Room>> freeRooms;
+//    private final TreeSet<Reservation> reservations;
+//    private final TreeMap<Integer, ArrayList<Room>> freeRooms;
+    private final TreeMap<Room, Customer> reservations; // Rooms sorted by ID
+//    private final TreeSet<Room> freeRooms;
     // WORKERS
     private final HashMap<Worker, Room> assignments;
     private final HashSet<Worker> freeWorkers;
@@ -44,8 +46,8 @@ public class Manager {
 
     private Manager() {
         this.speed = 0;
-        this.reservations = new TreeSet<>();
-        this.freeRooms = new TreeMap<>();
+        this.reservations = new TreeMap<>();
+//        this.freeRooms = new TreeMap<>();
         this.assignments = new HashMap<>();
         this.freeWorkers = new HashSet<>();
     }
@@ -57,28 +59,32 @@ public class Manager {
     }
 
     /* --- ROOMS --- */
-    
+
     public void addRoom(String id, int capacity, HashSet<Service> services) {
         // Validate Room
         Room room = new Room(id, capacity, services);
         validateRoom(room);
 
-        // TO DO: Extract
-        // Add new Room to Reservations + free rooms if not a duplicate
-        Reservation reservation = new Reservation(room);
-        if (reservations.add(reservation)) {
-            
-            // Get Room number of Services
-            int numServices = reservation.getRoom().getServices().size();
-            // Add Room to rooms with numServices number of Services
-            if (freeRooms.containsKey(numServices)) {
-                freeRooms.get(numServices).add(room);
-            } else {
-                ArrayList<Room> rooms = new ArrayList<>();
-                freeRooms.put(numServices, rooms);
-                rooms.add(room);
-            }
+        // Check for Room duplicate
+        if (!reservations.containsKey(room)) {
+            reservations.put(room, null);
         }
+
+        // Add new Room to Reservations if not a duplicate
+//        Reservation reservation = new Reservation(room);
+//        if (reservations.add(reservation)) {
+//
+//            // Add Room to free Rooms
+//            int numServices = room.getServices().size();
+//            // Add Room to rooms with numServices number of Services
+//            if (freeRooms.containsKey(numServices)) {
+//                freeRooms.get(numServices).add(room);
+//            } else {
+//                ArrayList<Room> rooms = new ArrayList<>();
+//                freeRooms.put(numServices, rooms);
+//                rooms.add(room);
+//            }
+//        }
     }
     private void validateRoom(Room room) {
         /**
@@ -87,35 +93,45 @@ public class Manager {
          * -    Check capacity > 0
          **/
     }
-    
-    private Room getRoomByServices(HashSet<Service> services) {
-        int requirements = services.size();
- 
-        for (int i = requirements; i < freeRooms.size(); i++) {
-            // Get Rooms which number of Services = requirements
-            ArrayList<Room> rooms = freeRooms.get(i);
-            Room room = getRoomMatchingServices(rooms, services);
-            
-            if (room != null) {
-                return room;
-            }
-        }
-        
-        throw new RuntimeException("No suitable room found :(");
-        
-    }
-    private Room getRoomMatchingServices(ArrayList<Room> rooms, HashSet<Service> services) {
-        // Look for a Room that meets all requirements
-        for (Room room : rooms) {
-            if (room.getServices().containsAll(services)) {
-                return room;
-            }
-        }
-        return null;
+
+    private void getFreeRooms() {
+        ArrayList<Room> freeRooms = new ArrayList<>();
     }
 
+//    private Room getRoomByServicesMembers(HashSet<Service> services, int members) {
+//        int requirements = services.size();
+//        for (int i = requirements; i < freeRooms.size(); i++) {
+//            // Get Rooms which number of Services = requirements
+//            ArrayList<Room> rooms = freeRooms.get(i);
+//            TreeMap<Integer, Room> validRooms = getRoomsMatchingServices(rooms, services);
+//            // If any is found, return the one with capacity closest to members
+//            if (!validRooms.isEmpty()) {
+//                for (int j = members; j < validRooms.size(); j++) {
+//                    Room room = validRooms.get(j);
+//                    if (room != null) {
+//                        return room;
+//                    }
+//                }
+//            }
+//        }
+//
+//        throw new RuntimeException("No suitable room found :(");
+//
+//    }
+//    private TreeMap<Integer, Room> getRoomsMatchingServices(ArrayList<Room> rooms, HashSet<Service> services) {
+//        TreeMap<Integer, Room> validRooms = new TreeMap<>();
+//        // Look for Rooms that meet all requirements
+//        for (Room room : rooms) {
+//            // If found, add Room + number of members
+//            if (room.getServices().containsAll(services)) {
+//                validRooms.put(room.getCapacity(), room);
+//            }
+//        }
+//        return null;
+//    }
+
     /* --- WORKERS --- */
-    
+
     public void addWorker(String dni, String name, HashSet<Skill> skills) {
         // Validate Worker
         Worker worker = new Worker(dni, name, skills);
@@ -136,18 +152,18 @@ public class Manager {
     }
 
     /* --- CUSTOMERS --- */
-    
+
     public void addCustomer(String dni, int members, HashSet<Service> requirements) {
         // Validate Customer
         Customer custommer = new Customer(dni, members, requirements);
         validateCustomer(custommer);
-        
+
         // Get suitable Room for Customer
-        Room room = getRoomByServices(requirements);
-        
-        if (room != null) {
-            // TO DO: Add Room to Reservations collection, somehow
-        }
+//        Room room = getRoomByServicesMembers(requirements, custommer.getMembers());
+//
+//        if (room != null) {
+//            // TO DO: Add Room to Reservations collection, somehow
+//        }
     }
     private void validateCustomer(Customer customer) {
         /**
@@ -156,9 +172,9 @@ public class Manager {
          * -    Check members > 0
          */
     }
-    
+
     /* --- HOTEL --- */
-    
+
     public int getSpeed() {
         return this.speed;
     }
@@ -173,28 +189,32 @@ public class Manager {
             this.money = money;
         }
     }
-    
+
     /* TEST */
     public void soutRooms() {
         System.out.println("*** ROOMS ***");
-        reservations.forEach((Reservation reservation) -> {
-            System.out.println(reservation.toString());
+        reservations.forEach((key, value) -> {
+            String roomID = key.getId();
+            String customerDNI = value != null ? value.getDNI() : "";
+            System.out.println(
+                    "Room: "+roomID+" - Customer: "+customerDNI
+            );
         });
         System.out.println();
     }
-    public void soutFreeRooms() {
-        System.out.println("*** FREE ROOMS ***");
-        freeRooms.forEach((key, value) -> {
-            StringBuilder roomsString = new StringBuilder();
-            value.forEach((Room room) -> {
-                roomsString.append(room.getId()).append(", ");
-            });
-            roomsString.delete(roomsString.length() - 2, roomsString.length());
-            
-            System.out.println(key + " - " + roomsString);
-        });
-        System.out.println();
-    }
+//    public void soutFreeRooms() {
+//        System.out.println("*** FREE ROOMS ***");
+//        freeRooms.forEach((key, value) -> {
+//            StringBuilder roomsString = new StringBuilder();
+//            value.forEach((Room room) -> {
+//                roomsString.append(room.getId()).append(", ");
+//            });
+//            roomsString.delete(roomsString.length() - 2, roomsString.length());
+//
+//            System.out.println(key + " - " + roomsString);
+//        });
+//        System.out.println();
+//    }
     public void soutAssignments() {
         System.out.println("*** ASSIGNMENTS ***");
         assignments.forEach((key, value) -> {

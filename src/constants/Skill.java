@@ -18,7 +18,7 @@ public enum Skill {
                 return BAR;
             case "COMIDA":
                 return FOOD;
-            case "LAUNDRY":
+            case "LAVANDERIA":
                 return LAUNDRY;
             default:
                 throw new AssertionError();

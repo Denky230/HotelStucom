@@ -5,7 +5,11 @@ import constants.RoomState;
 import constants.Service;
 import java.util.HashSet;
 
-public class Room {
+/**
+ * Sorted by ID.
+ * @author Denky
+ */
+public class Room implements Comparable<Room> {
 
     private String id;
     private int capacity;
@@ -43,5 +47,12 @@ public class Room {
         servs.delete(servs.length() - 2, servs.length());
 
         return "R: " + "ID=" + id + ", capacity=" + capacity + ", services=\n" + servs;
+    }
+
+    @Override
+    public int compareTo(Room t) {
+        int roomID = Integer.parseInt(id);
+        int otherRoomID = Integer.parseInt(t.getId());
+        return roomID - otherRoomID;
     }
 }
