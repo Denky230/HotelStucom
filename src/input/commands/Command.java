@@ -3,6 +3,7 @@ package input.commands;
 
 import management.Manager;
 import interfaces.Callable;
+import view.ViewHandler;
 
 public abstract class Command implements Callable {
 
@@ -10,6 +11,7 @@ public abstract class Command implements Callable {
     private final String CALL_CODE;
     
     public final static Manager manager = Manager.getInstance();
+    public final static ViewHandler view = ViewHandler.getInstance();
 
     public Command(int arguments, String callCode) {
         this.MIN_ARGUMENTS = arguments;
@@ -19,6 +21,10 @@ public abstract class Command implements Callable {
     public final int getArguments() { return MIN_ARGUMENTS; }
     public final String getCallCode() { return this.CALL_CODE; }
 
+    /**
+     * Implement call pre-conditions here.
+     * @return true if can be called, false otherwise
+     */
     public boolean canBeCalled() { return true; }
     public final void execute(String args[]) {
         if (canBeCalled()) {

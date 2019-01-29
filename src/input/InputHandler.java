@@ -1,6 +1,7 @@
 
 package input;
 
+import exceptions.InputException;
 import input.commands.Command;
 import input.commands.AddRoom;
 import input.commands.AddWorker;
@@ -38,7 +39,7 @@ public class InputHandler {
         commands.add(new Reservation(2, "RESERVATION"));
     }
 
-    public void processInput(String input) {
+    public void processInput(String input) throws InputException {
             String[] in = input.split(" ");
 
             // First input is the command call, rest is arguments
@@ -54,20 +55,20 @@ public class InputHandler {
             c.execute(arguments);
     }
 
-    private Command validateCommand(String callCode, String[] args) {
+    private Command validateCommand(String callCode, String[] args) throws InputException {
         // Make sure given command exists
         Command c = getCommandByCallCode(callCode);
         // Make sure number of arguments is correct for given command
         if (c.getArguments() > args.length)
-            throw new RuntimeException("Invalid number of arguments");
+            throw new InputException(InputException.Errors.INVALID_NUM_ARGS.ordinal());
 
         return c;
     }
-    private Command getCommandByCallCode(String callCode) {
+    private Command getCommandByCallCode(String callCode) throws InputException {
         for (Command command : commands) {
             if (command.getCallCode().equalsIgnoreCase(callCode))
                 return command;
         }
-        throw new RuntimeException("Bad command");
+        throw new InputException(InputException.Errors.COMMAND_NOT_FOUND.ordinal());
     }
 }

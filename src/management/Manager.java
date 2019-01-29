@@ -1,6 +1,7 @@
 
 package management;
 
+import constants.MoneyPenalty;
 import constants.Service;
 import constants.Skill;
 import java.util.ArrayList;
@@ -17,14 +18,14 @@ public class Manager {
     private int money;  // Hotel capital
 
     // ROOMS
-    private final TreeMap<Room, Customer> reservations; // Rooms sorted by ID
+    private final TreeMap<Room, Customer> rooms; // Rooms sorted by ID
     // WORKERS
     private final HashMap<Worker, Room> assignments;
     private final HashSet<Worker> freeWorkers;
 
     private Manager() {
         this.speed = 0;
-        this.reservations = new TreeMap<>();
+        this.rooms = new TreeMap<>();
         this.assignments = new HashMap<>();
         this.freeWorkers = new HashSet<>();
     }
@@ -43,8 +44,8 @@ public class Manager {
         validateRoom(room);
 
         // Check for Room duplicate
-        if (!reservations.containsKey(room)) {
-            reservations.put(room, null);
+        if (!rooms.containsKey(room)) {
+            rooms.put(room, null);
         }
     }
     private void validateRoom(Room room) {
@@ -57,7 +58,7 @@ public class Manager {
 
     private ArrayList<Room> getFreeRoomsSortedByCapacity() {
         ArrayList<Room> freeRooms = new ArrayList<>();
-        reservations.forEach((Room room, Customer customer) -> {
+        rooms.forEach((Room room, Customer customer) -> {
             if (customer == null) {
                 freeRooms.add(room);
             }
@@ -78,16 +79,17 @@ public class Manager {
         HashSet<Service> requirements = customer.getRequirements();
         int members = customer.getMembers();
 
+        Room freeRoom = null;
         // Look for free Room which capacity >= members and Services == requirements
         for (int i = members; i < freeRooms.size(); i++) {
-            Room freeRoom = freeRooms.get(i);
+            freeRoom = freeRooms.get(i);
             HashSet<Service> services = freeRoom.getServices();
             if (services.containsAll(requirements)) {
                 return freeRoom;
             }
         }
         
-        throw new RuntimeException("No suitable room found :(");
+        return freeRoom;
     }
 
     /* --- WORKERS --- */
@@ -120,9 +122,14 @@ public class Manager {
 
         // Get free Room with at least members capacity + meets requirements
         Room room = getRoomSuitableForCustomer(customer);
-        // Assign Customer to suitable Room
-        if (reservations.get(room) == null) {
-            reservations.put(room, customer);
+        if (room != null) {
+            // Assign Customer to suitable Room
+            if (rooms.get(room) == null) {
+                rooms.put(room, customer);
+            }
+        } else {
+            // Apply money penalty for no available Room
+            applyMoneyPenalty(MoneyPenalty.UNASSIGNED_CLIENT);
         }
     }
     private void validateCustomer(Customer customer) {
@@ -135,6 +142,10 @@ public class Manager {
 
     /* --- HOTEL --- */
 
+    private void applyMoneyPenalty(MoneyPenalty penalty) {
+        setMoney(money - penalty.getCost());
+    }
+    
     public int getSpeed() {
         return this.speed;
     }
@@ -153,7 +164,7 @@ public class Manager {
     /* TEST */
     public void soutRooms() {
         System.out.println("*** ROOMS ***");
-        reservations.forEach((key, value) -> {
+        rooms.forEach((key, value) -> {
             String roomID = key.getId();
             String customerDNI = value != null ? value.getDNI() : "";
             System.out.println(

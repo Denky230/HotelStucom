@@ -1,6 +1,7 @@
 
 package hotelstucom;
 
+import exceptions.InputException;
 import input.InputHandler;
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,6 +23,8 @@ public class HotelStucom {
                 try {
                     in.processInput(line);
 
+                } catch(InputException e) {
+                    System.out.println(e.getMessage());
                 } catch (RuntimeException e) {
                     e.printStackTrace();
                 }
