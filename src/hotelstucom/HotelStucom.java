@@ -14,14 +14,18 @@ public class HotelStucom {
 
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-            InputHandler in = InputHandler.getInstance();
+            InputHandler input = InputHandler.getInstance();
+            Manager manager = Manager.getInstance();
 
+            // Start thread to handle Customer tickets
+            manager.startTicketHandler();
+            
             // Read user input
             String line;
             while (!(line = br.readLine()).equalsIgnoreCase("X")) {
 
                 try {
-                    in.processInput(line);
+                    input.processInput(line);
 
                 } catch(InputException e) {
                     System.out.println(e.getMessage());
@@ -31,14 +35,12 @@ public class HotelStucom {
             }
 
             /* TEST */
-            Manager m = Manager.getInstance();
-
             // SOUT WORKERS
-            m.soutAssignments();
-            m.soutFreeWorkers();
+            manager.soutAssignments();
+            manager.soutFreeWorkers();
 
             // SOUT ROOMS
-            m.soutRooms();
+            manager.soutRooms();
 
         } catch (IOException e) {
             System.out.println(e.getMessage());

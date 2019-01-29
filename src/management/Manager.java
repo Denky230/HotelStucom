@@ -11,9 +11,12 @@ import java.util.TreeMap;
 import model.Customer;
 import model.Room;
 import model.Worker;
+import threads.TicketHandler;
 
 public class Manager {
 
+    private String TICKETS_FILE_PATH = "";
+    
     private int speed;  // Interval at which Thread will run
     private int money;  // Hotel capital
 
@@ -24,7 +27,7 @@ public class Manager {
     private final HashSet<Worker> freeWorkers;
 
     private Manager() {
-        this.speed = 0;
+        this.speed = 1000;
         this.rooms = new TreeMap<>();
         this.assignments = new HashMap<>();
         this.freeWorkers = new HashSet<>();
@@ -144,6 +147,13 @@ public class Manager {
 
     private void applyMoneyPenalty(MoneyPenalty penalty) {
         setMoney(money - penalty.getCost());
+    }
+    public void startTicketHandler() {
+        Runnable ticketHandler = new TicketHandler(TICKETS_FILE_PATH, speed);
+        Thread thread = new Thread(ticketHandler);
+        if (!thread.isAlive()) {
+            thread.start();
+        }
     }
     
     public int getSpeed() {
