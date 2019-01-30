@@ -1,10 +1,10 @@
 
-package input.commands;
+package input.commands.user;
 
 import constants.Skill;
 import java.util.HashSet;
 
-public class AddWorker extends Command {
+public class AddWorker extends UserCommand {
 
     public AddWorker(int arguments, String callCode) {
         super(arguments, callCode);
@@ -24,5 +24,10 @@ public class AddWorker extends Command {
 
         // Add new Worker
         manager.addWorker(dni, name, skills);
+    }
+
+    @Override
+    public String commandHelp() {
+        return "<DNI> <name> <skills>";
     }
 }

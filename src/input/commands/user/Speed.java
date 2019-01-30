@@ -1,9 +1,9 @@
 
-package input.commands;
+package input.commands.user;
 
-public class SetSpeed extends Command {
+public class Speed extends UserCommand {
 
-    public SetSpeed(int arguments, String callCode) {
+    public Speed(int arguments, String callCode) {
         super(arguments, callCode);
     }
 
@@ -12,5 +12,10 @@ public class SetSpeed extends Command {
         // Set application Speed
         int speed = Integer.valueOf(args[0]);
         manager.setSpeed(speed);
+    }
+
+    @Override
+    public String commandHelp() {
+        return "<milliseconds>";
     }
 }

@@ -1,10 +1,9 @@
 
 package exceptions;
 
-import interfaces.ExceptionData;
 import java.util.List;
 
-public abstract class MyException extends Exception implements ExceptionData {
+public abstract class MyException extends Exception {
         
     private final List<String> errorMessages = initErrorMessages();
     private final int code;
@@ -12,7 +11,7 @@ public abstract class MyException extends Exception implements ExceptionData {
     public MyException(int code) {
         this.code = code;
     }
-
+    
     @Override
     public String getMessage() {
         // Get message corresponding to error
@@ -20,4 +19,10 @@ public abstract class MyException extends Exception implements ExceptionData {
         
         return "--> "+errorMessage+" <--";
     }
+
+    /**
+     * Define error messages supported by this Exception.
+     * @return error messages
+     */
+    public abstract List<String> initErrorMessages();
 }

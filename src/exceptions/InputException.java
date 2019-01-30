@@ -19,7 +19,7 @@ public class InputException extends MyException {
     public List<String> initErrorMessages() {
         List<String> messages = Arrays.asList(
                 "Invalid number of arguments",
-                "Unknown command"
+                "Unknown command - Type ! to see available commands"
         );
                 
         return messages;      

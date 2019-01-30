@@ -18,14 +18,14 @@ public class HotelStucom {
             Manager manager = Manager.getInstance();
 
             // Start thread to handle Customer tickets
-            manager.startTicketHandler();
+//            manager.startTicketHandler();
             
             // Read user input
             String line;
             while (!(line = br.readLine()).equalsIgnoreCase("X")) {
 
                 try {
-                    input.processInput(line);
+                    input.processUserInput(line);
 
                 } catch(InputException e) {
                     System.out.println(e.getMessage());

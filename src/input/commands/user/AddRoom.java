@@ -1,10 +1,10 @@
 
-package input.commands;
+package input.commands.user;
 
 import constants.Service;
 import java.util.HashSet;
 
-public class AddRoom extends Command {
+public class AddRoom extends UserCommand {
 
     public AddRoom(int arguments, String callCode) {
         super(arguments, callCode);
@@ -28,5 +28,10 @@ public class AddRoom extends Command {
 
         // Add new Room
         manager.addRoom(id, capacity, services);
+    }
+
+    @Override
+    public String commandHelp() {
+        return "<ID> <capacity> [services]";
     }
 }

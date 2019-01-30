@@ -1,11 +1,10 @@
 
-package input.commands;
+package input;
 
 import management.Manager;
-import interfaces.Callable;
 import view.ViewHandler;
 
-public abstract class Command implements Callable {
+public abstract class Command {
 
     private final int MIN_ARGUMENTS;
     private final String CALL_CODE;
@@ -20,12 +19,17 @@ public abstract class Command implements Callable {
 
     public final int getArguments() { return MIN_ARGUMENTS; }
     public final String getCallCode() { return this.CALL_CODE; }
-
+    
     /**
      * Implement call pre-conditions here.
      * @return true if can be called, false otherwise
      */
     public boolean canBeCalled() { return true; }
+    /**
+     * Implement Callable functionalities here.
+     * @param args arguments used by Callable
+     */
+    public abstract void call(String args[]);
     public final void execute(String args[]) {
         if (canBeCalled()) {
             call(args);

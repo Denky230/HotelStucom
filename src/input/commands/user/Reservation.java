@@ -1,10 +1,10 @@
 
-package input.commands;
+package input.commands.user;
 
 import constants.Service;
 import java.util.HashSet;
 
-public class Reservation extends Command {
+public class Reservation extends UserCommand {
 
     public Reservation(int arguments, String callCode) {
         super(arguments, callCode);
@@ -26,5 +26,10 @@ public class Reservation extends Command {
         
         // Add new Customer
         manager.addCustomer(dni, members, requirements);
+    }
+
+    @Override
+    public String commandHelp() {
+        return "<customer DNI> <number of members> [services]";
     }
 }
