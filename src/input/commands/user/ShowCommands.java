@@ -1,7 +1,6 @@
 
 package input.commands.user;
 
-import input.Command;
 import java.util.List;
 
 /**
@@ -15,7 +14,7 @@ public class ShowCommands extends UserCommand {
 
     @Override
     public void call(String[] args) {
-        List<Command> commands = input.InputHandler.getInstance().getUserCommands();
+        List<UserCommand> commands = input.InputHandler.getInstance().getUserCommands();
         view.soutCommandsHelp(commands);
     }
 

@@ -1,7 +1,7 @@
 
 package view;
 
-import input.Command;
+import input.commands.user.UserCommand;
 import java.util.List;
 
 public class ViewHandler {
@@ -13,14 +13,14 @@ public class ViewHandler {
             instance = new ViewHandler();
         return instance;
     }
-    
+
     /**
      * Show User available commands and how to user them.
      * @param commands commands
      */
-    public void soutCommandsHelp(List<Command> commands) {
+    public void soutCommandsHelp(List<UserCommand> commands) {
         StringBuilder sb = new StringBuilder("*** COMMANDS ***\n");
-        for (Command command : commands) {
+        for (UserCommand command : commands) {
             sb.append(command.toString()).append("\n");
         }
         System.out.println(sb);

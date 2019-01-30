@@ -8,7 +8,7 @@ public abstract class UserCommand extends Command {
     public UserCommand(int arguments, String callCode) {
         super(arguments, callCode);
     }
-    
+
     @Override
     public String toString() {
         return getCallCode() + " " + commandHelp();

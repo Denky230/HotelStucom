@@ -18,7 +18,7 @@ import java.util.List;
 public class InputHandler {
 
     // Application supported commands
-    private List<Command> userCommands;
+    private List<UserCommand> userCommands;
     private List<Command> customerCommands;
 
     private InputHandler() {
@@ -54,7 +54,7 @@ public class InputHandler {
     public void processCustomerInput(String input) throws InputException {
         processInput(input, customerCommands);
     }
-    private void processInput(String input, List<Command> commands) throws InputException {
+    private void processInput(String input, List commands) throws InputException {
             String[] in = input.split(" ");
 
             // First input is the command call, rest is arguments
@@ -67,7 +67,7 @@ public class InputHandler {
             // Make sure given Command exists
             Command c = getCommandByCallCode(callCode, commands);
             // Make sure Command is valid
-            validateCommand(c, arguments);            
+            validateCommand(c, arguments);
             // Call Command with given arguments
             c.execute(arguments);
     }
@@ -85,7 +85,7 @@ public class InputHandler {
         throw new InputException(InputException.Errors.COMMAND_NOT_FOUND.ordinal());
     }
 
-    public List<Command> getUserCommands() {
+    public List<UserCommand> getUserCommands() {
         return userCommands;
     }
 }

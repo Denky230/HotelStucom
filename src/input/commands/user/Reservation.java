@@ -15,7 +15,7 @@ public class Reservation extends UserCommand {
         String dni = args[0];
         int members = Integer.parseInt(args[1]);
         HashSet<Service> requirements = new HashSet<>();
-        
+
         if (args.length == 3) {
             // Add requirements (Services)
             String[] reqs = args[2].split(",");
@@ -23,7 +23,7 @@ public class Reservation extends UserCommand {
                 requirements.add(Service.getValueFromString(req));
             }
         }
-        
+
         // Add new Customer
         manager.addCustomer(dni, members, requirements);
     }
