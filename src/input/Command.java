@@ -8,7 +8,7 @@ public abstract class Command {
 
     private final int MIN_ARGUMENTS;
     private final String CALL_CODE;
-    
+
     public final static Manager manager = Manager.getInstance();
     public final static ViewHandler view = ViewHandler.getInstance();
 
@@ -19,7 +19,7 @@ public abstract class Command {
 
     public final int getArguments() { return MIN_ARGUMENTS; }
     public final String getCallCode() { return this.CALL_CODE; }
-    
+
     /**
      * Implement call pre-conditions here.
      * @return true if can be called, false otherwise
