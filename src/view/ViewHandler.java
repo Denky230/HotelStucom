@@ -19,10 +19,38 @@ public class ViewHandler {
      * @param commands commands
      */
     public void soutCommandsHelp(List<Command> commands) {
-        StringBuilder sb = new StringBuilder("*** COMMANDS ***\n");
+        String header = formatString("*** COMMANDS ***\n");
+        StringBuilder sb = new StringBuilder(header);
         for (Command command : commands) {
-            sb.append(command.toString()).append("\n");
+            sb.append("\n").append(command.toString());
         }
         System.out.println(sb);
+    }
+    
+    private String formatString(String string) {
+        StringBuilder result = new StringBuilder();
+        String[] formated = string.split("\n");
+        StringBuilder side = new StringBuilder("== ");
+        int maxLength = getStringsMaxLength(formated);
+        int lineLength = maxLength + (side.length() * 2);
+        
+        String separator = String.format("%"+lineLength+"s", "=").replace(" ", "=");
+        for (String s : formated) {
+            String line = String.format("%-"+maxLength+"s", s);
+            result.append(separator)
+                    .append("\n")
+                    .append(side).append(line).append(side.reverse())
+                    .append("\n");
+        }
+        result.append(separator);
+        
+        return result.toString();
+    }
+    private int getStringsMaxLength(String[] strings) {
+        int maxLength = 0;
+        for (String string : strings) {
+            maxLength = string.length() > maxLength ? string.length() : maxLength;
+        }
+        return maxLength;
     }
 }

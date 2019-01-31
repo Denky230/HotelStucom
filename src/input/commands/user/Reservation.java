@@ -30,6 +30,6 @@ public class Reservation extends UserCommand {
 
     @Override
     public String commandHelp() {
-        return "<customer DNI> <number of members> [services]";
+        return "<customer DNI> [services]";
     }
 }
