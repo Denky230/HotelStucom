@@ -21,7 +21,7 @@ public enum Skill {
             case "LAVANDERIA":
                 return LAUNDRY;
             default:
-                throw new AssertionError();
+                throw new RuntimeException("Skill no existe");
         }
     }
 }

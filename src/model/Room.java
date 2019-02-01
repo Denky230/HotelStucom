@@ -22,6 +22,9 @@ public class Room implements Comparable<Room> {
         this.state = RoomState.CLEAN;
         this.services = services;
     }
+    public Room(String id) {
+        this(id, 0, null);
+    }
 
     public String getId() {
         return id;
@@ -34,6 +37,10 @@ public class Room implements Comparable<Room> {
     }
     public HashSet<Service> getServices() {
         return services;
+    }
+
+    public void setState(RoomState state) {
+        this.state = state;
     }
 
     @Override

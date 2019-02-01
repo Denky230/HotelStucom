@@ -15,14 +15,14 @@ public class AddRoom extends UserCommand {
         String id = args[0];
         int capacity = Integer.valueOf(args[1]);
         HashSet<Service> services = new HashSet<>();
-                
+
         // Add Services if any was input
         if (args.length == 3) {
-            String servicesStrings[] = args[2].split(",");
-            
+            String inServices[] = args[2].split(",");
+
             // Add Services
-            for (String servicesString : servicesStrings) {
-                services.add(Service.getValueFromString(servicesString));
+            for (String inService : inServices) {
+                services.add(Service.getValueFromString(inService));
             }
         }
 

@@ -2,11 +2,13 @@
 package management;
 
 import constants.MoneyPenalty;
+import constants.RoomState;
 import constants.Service;
 import constants.Skill;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.TreeMap;
 import model.Customer;
 import model.Room;
@@ -15,8 +17,8 @@ import threads.TicketHandler;
 
 public class Manager {
 
-    private String TICKETS_FILE_PATH = "";
-    
+    private final String TICKETS_FILE_PATH = "";
+
     private int speed;  // Interval at which Thread will run
     private int money;  // Hotel capital
 
@@ -41,6 +43,21 @@ public class Manager {
 
     /* --- ROOMS --- */
 
+    /**
+     * Return Room with given ID or null if not found.
+     * @param id Room ID
+     * @return Room with given ID, null if not found
+     */
+    private Room getRoomByID(String id) {
+        // Get Room if exists
+        Room room = rooms.ceilingKey(new Room(id));
+        if (room != null) {
+            return room;
+        }
+        // If not...
+        throw new RuntimeException("No Room with such ID");
+    }
+
     public void addRoom(String id, int capacity, HashSet<Service> services) {
         // Validate Room
         Room room = new Room(id, capacity, services);
@@ -59,24 +76,6 @@ public class Manager {
          **/
     }
 
-    private ArrayList<Room> getFreeRoomsSortedByCapacity() {
-        ArrayList<Room> freeRooms = new ArrayList<>();
-        rooms.forEach((Room room, Customer customer) -> {
-            if (customer == null) {
-                freeRooms.add(room);
-            }
-        });
-        
-        ArrayList<Room> freeRoomsByCapacity = sortRoomsByCapacity(freeRooms);
-        return freeRoomsByCapacity;
-    }
-    private ArrayList<Room> sortRoomsByCapacity(ArrayList<Room> rooms) {
-        rooms.sort((o1, o2) -> {
-            return o1.getCapacity() - o2.getCapacity();
-        });
-        return rooms;
-    }
-
     private Room getRoomSuitableForCustomer(Customer customer) {
         ArrayList<Room> freeRooms = getFreeRoomsSortedByCapacity();
         HashSet<Service> requirements = customer.getRequirements();
@@ -91,8 +90,27 @@ public class Manager {
                 return freeRoom;
             }
         }
-        
+
         return freeRoom;
+    }
+    private ArrayList<Room> getFreeRoomsSortedByCapacity() {
+        ArrayList<Room> freeRooms = new ArrayList<>();
+
+        // Add every free Room
+        rooms.forEach((Room room, Customer customer) -> {
+            if (customer == null) {
+                freeRooms.add(room);
+            }
+        });
+
+        ArrayList<Room> freeRoomsByCapacity = sortRoomsByCapacity(freeRooms);
+        return freeRoomsByCapacity;
+    }
+    private ArrayList<Room> sortRoomsByCapacity(ArrayList<Room> rooms) {
+        rooms.sort((o1, o2) -> {
+            return o1.getCapacity() - o2.getCapacity();
+        });
+        return rooms;
     }
 
     /* --- WORKERS --- */
@@ -123,6 +141,17 @@ public class Manager {
         Customer customer = new Customer(dni, members, requirements);
         validateCustomer(customer);
 
+        // Look for valid Room to asign him
+        assignRoomToCustomer(customer);
+    }
+    private void validateCustomer(Customer customer) {
+        /**
+         * TO DO:
+         * -    Check DNI.length == 9
+         * -    Check members > 0
+         */
+    }
+    private void assignRoomToCustomer(Customer customer) {
         // Get free Room with at least members capacity + meets requirements
         Room room = getRoomSuitableForCustomer(customer);
         if (room != null) {
@@ -135,12 +164,33 @@ public class Manager {
             applyMoneyPenalty(MoneyPenalty.UNASSIGNED_CLIENT);
         }
     }
-    private void validateCustomer(Customer customer) {
-        /**
-         * TO DO:
-         * -    Check DNI.length == 9
-         * -    Check members > 0
-         */
+
+    /* --- TICKETS --- */
+
+    public void problem(String roomID) {
+        // Get Room by given ID, if exists
+        Room room = getRoomByID(roomID);
+
+        // Get current Room Customer
+        Customer customer = rooms.get(room);
+        // Empty out Room + set it to BROKEN
+        rooms.put(room, null);
+        room.setState(RoomState.BROKEN);
+
+        // Assign Customer new valid Room
+        assignRoomToCustomer(customer);
+    }
+    public void request(String roomID, List<Skill> skillsRequested) {
+        // Get Room by ID, if exists
+        Room room = getRoomByID(roomID);
+
+        skillsRequested.forEach((Skill skill) -> {
+            // Get free Worker by Skills
+
+            // Remove Skills covered by Worker
+        });
+
+        // Store non-covered requests in Room pendingRequests
     }
 
     /* --- HOTEL --- */
@@ -148,6 +198,7 @@ public class Manager {
     private void applyMoneyPenalty(MoneyPenalty penalty) {
         setMoney(money - penalty.getCost());
     }
+
     public void startTicketHandler() {
         Runnable ticketHandler = new TicketHandler(TICKETS_FILE_PATH, speed);
         Thread thread = new Thread(ticketHandler);
@@ -155,7 +206,7 @@ public class Manager {
             thread.start();
         }
     }
-    
+
     public int getSpeed() {
         return this.speed;
     }

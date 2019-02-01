@@ -11,6 +11,7 @@ public class Problem extends Command {
 
     @Override
     public void call(String[] args) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String roomID = args[0];
+        manager.problem(roomID);
     }
 }

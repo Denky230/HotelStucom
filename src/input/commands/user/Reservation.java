@@ -18,9 +18,9 @@ public class Reservation extends UserCommand {
 
         if (args.length == 3) {
             // Add requirements (Services)
-            String[] reqs = args[2].split(",");
-            for (String req : reqs) {
-                requirements.add(Service.getValueFromString(req));
+            String[] inRequirements = args[2].split(",");
+            for (String inRequirement : inRequirements) {
+                requirements.add(Service.getValueFromString(inRequirement));
             }
         }
 

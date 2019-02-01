@@ -71,7 +71,7 @@ public class InputHandler {
             // Call Command with given arguments
             c.execute(arguments);
     }
-    
+
     private void validateCommand(Command command, String[] args) throws InputException {
         // Make sure number of arguments is correct for given command
         if (command.getArguments() > args.length)

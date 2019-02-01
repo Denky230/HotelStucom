@@ -17,9 +17,11 @@ public class HotelStucom {
             InputHandler input = InputHandler.getInstance();
             Manager manager = Manager.getInstance();
 
+            // TO DO. Read LoadHotel
+
             // Start thread to handle Customer tickets
 //            manager.startTicketHandler();
-            
+
             // Read user input
             String line;
             while (!(line = br.readLine()).equalsIgnoreCase("X")) {
@@ -36,8 +38,8 @@ public class HotelStucom {
 
             /* TEST */
             // SOUT WORKERS
-            manager.soutAssignments();
-            manager.soutFreeWorkers();
+//            manager.soutAssignments();
+//            manager.soutFreeWorkers();
 
             // SOUT ROOMS
             manager.soutRooms();
