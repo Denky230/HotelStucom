@@ -3,6 +3,7 @@ package model;
 
 import constants.RoomState;
 import constants.Service;
+import constants.Skill;
 import java.util.HashSet;
 
 /**
@@ -13,14 +14,16 @@ public class Room implements Comparable<Room> {
 
     private String id;
     private int capacity;
-    private RoomState state;
+    private RoomState state  ;
     private HashSet<Service> services;
+    private HashSet<Skill> pendingRequests;
 
     public Room(String id, int capacity, HashSet<Service> services) {
         this.id = id;
         this.capacity = capacity;
-        this.state = RoomState.CLEAN;
         this.services = services;
+        this.state = RoomState.CLEAN;
+        this.pendingRequests = new HashSet<>();
     }
     public Room(String id) {
         this(id, 0, null);
@@ -37,6 +40,9 @@ public class Room implements Comparable<Room> {
     }
     public HashSet<Service> getServices() {
         return services;
+    }
+    public HashSet<Skill> getPendingRequests() {
+        return this.pendingRequests;
     }
 
     public void setState(RoomState state) {

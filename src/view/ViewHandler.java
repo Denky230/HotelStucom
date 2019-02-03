@@ -15,7 +15,7 @@ public class ViewHandler {
     }
 
     /**
-     * Show User available commands and how to user them.
+     * Show User available commands and how to use them.
      * @param commands commands
      */
     public void soutCommandsHelp(List<UserCommand> commands) {
@@ -24,7 +24,7 @@ public class ViewHandler {
         for (UserCommand command : commands) {
             sb.append("\n").append(command.toString());
         }
-        System.out.println(sb);
+        System.err.print(sb);
     }
     
     private String formatString(String string) {

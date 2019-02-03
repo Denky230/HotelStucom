@@ -12,6 +12,6 @@ public class Problem extends Command {
     @Override
     public void call(String[] args) {
         String roomID = args[0];
-        manager.problem(roomID);
+        manager.addProblem(roomID);
     }
 }
