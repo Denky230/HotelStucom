@@ -23,7 +23,7 @@ public enum Service {
             case "SWEET":
                 return SWEET;
             default:
-                throw new RuntimeException("Servisio no existe");
+                throw new RuntimeException("Servisio not found");
         }
     }
 }

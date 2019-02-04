@@ -21,7 +21,7 @@ public enum Skill {
             case "LAVANDERIA":
                 return LAUNDRY;
             default:
-                throw new RuntimeException("Skill no existe");
+                throw new RuntimeException("Skill not found");
         }
     }
 }

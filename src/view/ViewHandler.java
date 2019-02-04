@@ -3,6 +3,9 @@ package view;
 
 import input.commands.user.UserCommand;
 import java.util.List;
+import model.Customer;
+import model.Room;
+import model.Worker;
 
 public class ViewHandler {
 
@@ -14,6 +17,16 @@ public class ViewHandler {
         return instance;
     }
 
+    public void soutNewRoom(Room room) {
+        System.out.println("Room "+room.getId()+" added");
+    }
+    public void soutNewWorker(Worker worker) {
+        System.out.println("Worker "+worker.getDNI()+" added");
+    }
+    public void soutNewCustomer(Customer customer, Room room) {
+        System.out.println("Customer "+customer.getDNI()+" assigned to "+room.getId());
+    }
+    
     /**
      * Show User available commands and how to use them.
      * @param commands commands

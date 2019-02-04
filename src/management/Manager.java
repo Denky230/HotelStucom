@@ -56,7 +56,14 @@ public class Manager {
         throw new RuntimeException("No Room with such ID");
     }
 
-    public void addRoom(String id, int capacity, HashSet<Service> services) {
+    /**
+     * Add new Room with given parameters. Returns the Room if successfully added.
+     * @param id Room ID
+     * @param capacity Room capacity
+     * @param services Room Services
+     * @return Room if added.
+     */
+    public Room addRoom(String id, int capacity, HashSet<Service> services) {
         // Validate Room
         Room room = new Room(id, capacity, services);
         validateRoom(room);
@@ -64,12 +71,16 @@ public class Manager {
         // Check for Room duplicate
         if (!reservations.containsKey(room)) {
             reservations.put(room, null);
+            return room;
+        } else {
+            throw new RuntimeException("Room "+room.getId()+" already registered");
         }
     }
     private void validateRoom(Room room) {
         /**
          * TO DO:
          * -    Check id has 3 digits
+         * -    Check id != 013
          * -    Check capacity > 0
          **/
     }
@@ -112,25 +123,6 @@ public class Manager {
     }
 
     /* --- WORKERS --- */
-
-    public void addWorker(String dni, String name, HashSet<Skill> skills) {
-        // Validate Worker
-        Worker worker = new Worker(dni, name, skills);
-        validateWorker(worker);
-
-        // Add new Worker if not a duplicate
-        if (freeWorkers.add(worker)) {
-            // If no duplicate, add Worker to Assignments
-            assignments.put(worker, null);
-        }
-    }
-    private void validateWorker(Worker worker) {
-        /**
-         * TO DO:
-         * -    Check skills.size > 0
-         * -    Check DNI.length == 9
-         */
-    }
     
     private Worker getFreeWorkerBySkill(Skill skill) {
         for (Worker worker : freeWorkers) {
@@ -140,34 +132,63 @@ public class Manager {
         return null;
     }
 
+    /**
+     * Add new Worker with given parameters. Returns the Worker if successfully added.
+     * @param dni Worker DNI
+     * @param name Worker name
+     * @param skills Worker Skills
+     * @return Worker if added
+     */
+    public Worker addWorker(String dni, String name, HashSet<Skill> skills) {
+        // Validate Worker
+        Worker worker = new Worker(dni, name, skills);
+        validateWorker(worker);
+
+        // Add new Worker if not a duplicate
+        if (freeWorkers.add(worker)) {
+            // If no duplicate, add Worker to Assignments
+            assignments.put(worker, null);
+            return worker;
+        } else {
+            throw new RuntimeException("Worker "+worker.getDNI()+" already registered");
+        }
+    }
+    private void validateWorker(Worker worker) {
+        /**
+         * TO DO:
+         * -    Check DNI.length == 8 || == 9 with right letter
+         * -    Check skills.size > 0
+         */
+    }
+
     /* --- CUSTOMERS --- */
 
-    public void addCustomer(String dni, int members, HashSet<Service> requirements) {
+    public Customer addCustomer(String dni, int members, HashSet<Service> requirements) {
         // Validate Customer
         Customer customer = new Customer(dni, members, requirements);
         validateCustomer(customer);
 
-        // Look for valid Room to asign him
-        assignRoomToCustomer(customer);
+        return customer;
     }
     private void validateCustomer(Customer customer) {
         /**
          * TO DO:
-         * -    Check DNI.length == 9
+         * -    Check DNI.length == 8 || == 9 with right letter
          * -    Check members > 0
          */
     }
-    private void assignRoomToCustomer(Customer customer) {
+
+    public Room assignRoomToCustomer(Customer customer) {
         // Get free Room with at least members capacity + meets requirements
         Room room = getRoomSuitableForCustomer(customer);
         if (room != null) {
             // Assign Customer to suitable Room
-            if (reservations.get(room) == null) {
-                reservations.put(room, customer);
-            }
+            reservations.put(room, customer);
+            return room;
         } else {
             // Apply money penalty for no available Room
             applyMoneyPenalty(MoneyPenalty.UNASSIGNED_CLIENT);
+            throw new RuntimeException("Couldn't assign the Customer");
         }
     }
 

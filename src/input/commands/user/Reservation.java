@@ -3,6 +3,8 @@ package input.commands.user;
 
 import constants.Service;
 import java.util.HashSet;
+import model.Customer;
+import model.Room;
 
 public class Reservation extends UserCommand {
 
@@ -25,7 +27,10 @@ public class Reservation extends UserCommand {
         }
 
         // Add new Customer
-        manager.addCustomer(dni, members, requirements);
+        Customer customer = manager.addCustomer(dni, members, requirements);
+        // Look for valid Room for Customer
+        Room room = manager.assignRoomToCustomer(customer);
+        view.soutNewCustomer(customer, room);
     }
 
     @Override

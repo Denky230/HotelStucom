@@ -3,6 +3,7 @@ package input.commands.user;
 
 import constants.Skill;
 import java.util.HashSet;
+import model.Worker;
 
 public class AddWorker extends UserCommand {
 
@@ -23,7 +24,8 @@ public class AddWorker extends UserCommand {
         }
 
         // Add new Worker
-        manager.addWorker(dni, name, skills);
+        Worker worker = manager.addWorker(dni, name, skills);
+        view.soutNewWorker(worker);
     }
 
     @Override

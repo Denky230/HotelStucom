@@ -14,7 +14,7 @@ public class HotelStucom {
 
         try {
             // Load initial hotel data
-//            input.loadHotelData();
+            input.loadHotelData();
 
             // Start thread to handle Customer tickets
 //            manager.startTicketHandler(input.TICKETS_FILE_PATH);

@@ -28,14 +28,21 @@ public class InputReader {
         return instance;
     }
     
-    public void loadHotelData() throws IOException, InputException {
+    public void loadHotelData() throws IOException {
         // Set BufferedReader to read files
         FileReader fr = new FileReader(TICKETS_FILE_PATH);
         br = new BufferedReader(fr);
         
         String line;
         while ((line = br.readLine()) != null) {
-            inputHandler.processCustomerInput(line);
+            try {
+                inputHandler.processUserInput(line);
+
+            } catch (InputException e) {
+                System.out.println(e.getMessage());
+            } catch (RuntimeException e) {
+                System.out.println(e.getMessage());
+            }
         }
         
         br.close();

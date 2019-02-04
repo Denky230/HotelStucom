@@ -3,6 +3,7 @@ package input.commands.user;
 
 import constants.Service;
 import java.util.HashSet;
+import model.Room;
 
 public class AddRoom extends UserCommand {
 
@@ -27,7 +28,8 @@ public class AddRoom extends UserCommand {
         }
 
         // Add new Room
-        manager.addRoom(id, capacity, services);
+        Room room = manager.addRoom(id, capacity, services);
+        view.soutNewRoom(room);
     }
 
     @Override
