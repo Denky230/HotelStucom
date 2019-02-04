@@ -1,12 +1,17 @@
 
 package threads;
 
+import exceptions.InputException;
 import input.InputHandler;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 public class TicketHandler implements Runnable {
     
     private final String FILE_PATH;
-    private int SPEED;
+    private final int SPEED;
     
     private final InputHandler input = InputHandler.getInstance();
 
@@ -18,15 +23,33 @@ public class TicketHandler implements Runnable {
     @Override
     public void run() {
 
+        FileReader fr = null;
         try {
-            while (true) {                
-                Thread.sleep(SPEED);
+            fr = new FileReader(FILE_PATH);
+            BufferedReader br = new BufferedReader(fr);
 
-                System.out.println("run");
+            while (true) {
+                String line;
+                while ((line = br.readLine()) != null) {
+                    try {
+                        Thread.sleep(SPEED);
+                        input.processCustomerInput(line);
+
+                    } catch (InputException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
             }
-            
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+        } catch (IOException | InterruptedException e) {
+            System.out.println(e.getMessage());
+
+        } finally {
+            try {
+                fr.close();
+            } catch (IOException ex) {
+                System.out.println(ex.getMessage());
+            }
         }
     }
 }
