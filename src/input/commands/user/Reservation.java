@@ -2,6 +2,7 @@
 package input.commands.user;
 
 import constants.Service;
+import exceptions.MyException;
 import java.util.HashSet;
 import model.Customer;
 import model.Room;
@@ -13,7 +14,7 @@ public class Reservation extends UserCommand {
     }
 
     @Override
-    public void call(String[] args) {
+    public void call(String[] args) throws MyException {
         String dni = args[0];
         int members = Integer.parseInt(args[1]);
         HashSet<Service> requirements = new HashSet<>();

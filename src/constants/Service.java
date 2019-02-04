@@ -1,10 +1,12 @@
 
 package constants;
 
+import exceptions.RegistrationException;
+
 public enum Service {
     TV, BALCONY, DOUBLEBED, JACUZZI, MINIBAR, TELEPHONE, SATELITE, SWEET;
 
-    public static Service getValueFromString(String service) {
+    public static Service getValueFromString(String service) throws RegistrationException {
         switch (service.toUpperCase().trim()) {
             case "TV":
                 return TV;
@@ -23,7 +25,10 @@ public enum Service {
             case "SWEET":
                 return SWEET;
             default:
-                throw new RuntimeException("Servisio not found");
+                throw new RegistrationException(
+                        RegistrationException.Errors.SERVICE_NOT_FOUND.ordinal(),
+                        service
+                );
         }
     }
 }

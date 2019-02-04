@@ -2,6 +2,7 @@
 package input;
 
 import exceptions.InputException;
+import exceptions.MyException;
 import input.commands.customer.Leave;
 import input.commands.customer.Problem;
 import input.commands.customer.Request;
@@ -14,6 +15,7 @@ import input.commands.user.Speed;
 import input.commands.user.UserCommand;
 import java.util.ArrayList;
 import java.util.List;
+import view.ViewHandler;
 
 public class InputHandler {
 
@@ -48,36 +50,37 @@ public class InputHandler {
         customerCommands.add(new Leave(2, "LEAVE"));
     }
 
-    public void processUserInput(String input) throws InputException {
+    public void processUserInput(String input) throws MyException {
         processInput(input, userCommands);
     }
-    public void processCustomerInput(String input) throws InputException {
+    public void processCustomerInput(String input) throws MyException {
         processInput(input, customerCommands);
     }
-    private void processInput(String input, List commands) throws InputException {
-            String[] in = input.split(" ");
+    private void processInput(String input, List commands) throws MyException {
+        ViewHandler.getInstance().soutUserInput(input);
+        String[] in = input.split(" ");
 
-            // First input is the command call, rest is arguments
-            String callCode = in[0];
-            String[] arguments = new String[in.length - 1];
-            for (int i = 0; i < arguments.length; i++) {
-                arguments[i] = in[i + 1];
-            }
+        // First input is the command call, rest is arguments
+        String callCode = in[0];
+        String[] arguments = new String[in.length - 1];
+        for (int i = 0; i < arguments.length; i++) {
+            arguments[i] = in[i + 1];
+        }
 
-            // Make sure given Command exists
-            Command c = getCommandByCallCode(callCode, commands);
-            // Make sure Command is valid
-            validateCommand(c, arguments);
-            // Call Command with given arguments
-            c.execute(arguments);
+        // Make sure given Command exists
+        Command c = getCommandByCallCode(callCode, commands);
+        // Make sure Command is valid
+        validateCommand(c, arguments);
+        // Call Command with given arguments
+        c.execute(arguments);
     }
 
-    private void validateCommand(Command command, String[] args) throws InputException {
+    private void validateCommand(Command command, String[] args) throws MyException {
         // Make sure number of arguments is correct for given command
         if (command.getArguments() > args.length)
             throw new InputException(InputException.Errors.INVALID_NUM_ARGS.ordinal());
     }
-    private Command getCommandByCallCode(String callCode, List<Command> commands) throws InputException {
+    private Command getCommandByCallCode(String callCode, List<Command> commands) throws MyException {
         for (Command command : commands) {
             if (command.getCallCode().equalsIgnoreCase(callCode))
                 return command;

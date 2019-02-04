@@ -8,7 +8,7 @@ import management.Manager;
 public class HotelStucom {
 
     public static void main(String[] args) {
-        
+
         InputReader input = InputReader.getInstance();
         Manager manager = Manager.getInstance();
 
@@ -17,7 +17,7 @@ public class HotelStucom {
             input.loadHotelData();
 
             // Start thread to handle Customer tickets
-//            manager.startTicketHandler(input.TICKETS_FILE_PATH);
+            manager.startTicketHandler(input.TICKETS_FILE_PATH);
 
             // Read user input as Commands
             input.readUserInput();

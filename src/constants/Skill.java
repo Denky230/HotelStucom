@@ -1,10 +1,12 @@
 
 package constants;
 
+import exceptions.RegistrationException;
+
 public enum Skill {
     MAINTENANCE, CLEANING, POOL, SPA, BAR, FOOD, LAUNDRY;
 
-    public static Skill getValueFromString(String skill) {
+    public static Skill getValueFromString(String skill) throws RegistrationException {
         switch (skill.toUpperCase().trim()) {
             case "MANTENIMIENTO":
                 return MAINTENANCE;
@@ -21,7 +23,10 @@ public enum Skill {
             case "LAVANDERIA":
                 return LAUNDRY;
             default:
-                throw new RuntimeException("Skill not found");
+                throw new RegistrationException(
+                        RegistrationException.Errors.SKILL_NOT_FOUND.ordinal(),
+                        skill
+                );
         }
     }
 }

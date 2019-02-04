@@ -1,6 +1,7 @@
 
 package input;
 
+import exceptions.MyException;
 import management.Manager;
 import view.ViewHandler;
 
@@ -28,9 +29,10 @@ public abstract class Command {
     /**
      * Implement Callable functionalities here.
      * @param args arguments used by Callable
+     * @throws exceptions.MyException
      */
-    public abstract void call(String args[]);
-    public final void execute(String args[]) {
+    public abstract void call(String args[]) throws MyException;
+    public final void execute(String args[]) throws MyException {
         if (canBeCalled()) {
             call(args);
         }

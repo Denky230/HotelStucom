@@ -5,6 +5,7 @@ import constants.MoneyPenalty;
 import constants.RoomState;
 import constants.Service;
 import constants.Skill;
+import exceptions.RegistrationException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -62,8 +63,9 @@ public class Manager {
      * @param capacity Room capacity
      * @param services Room Services
      * @return Room if added.
+     * @throws exceptions.RegistrationException
      */
-    public Room addRoom(String id, int capacity, HashSet<Service> services) {
+    public Room addRoom(String id, int capacity, HashSet<Service> services) throws RegistrationException {
         // Validate Room
         Room room = new Room(id, capacity, services);
         validateRoom(room);
@@ -73,7 +75,10 @@ public class Manager {
             reservations.put(room, null);
             return room;
         } else {
-            throw new RuntimeException("Room "+room.getId()+" already registered");
+            throw new RegistrationException(
+                    RegistrationException.Errors.ROOM_DUPLICATED.ordinal(),
+                    room.getId()
+            );
         }
     }
     private void validateRoom(Room room) {
@@ -123,7 +128,7 @@ public class Manager {
     }
 
     /* --- WORKERS --- */
-    
+
     private Worker getFreeWorkerBySkill(Skill skill) {
         for (Worker worker : freeWorkers) {
             if (worker.getSkills().contains(skill))
@@ -138,8 +143,9 @@ public class Manager {
      * @param name Worker name
      * @param skills Worker Skills
      * @return Worker if added
+     * @throws exceptions.RegistrationException
      */
-    public Worker addWorker(String dni, String name, HashSet<Skill> skills) {
+    public Worker addWorker(String dni, String name, HashSet<Skill> skills) throws RegistrationException {
         // Validate Worker
         Worker worker = new Worker(dni, name, skills);
         validateWorker(worker);
@@ -150,7 +156,10 @@ public class Manager {
             assignments.put(worker, null);
             return worker;
         } else {
-            throw new RuntimeException("Worker "+worker.getDNI()+" already registered");
+            throw new RegistrationException(
+                    RegistrationException.Errors.WORKER_DUPLICATED.ordinal(),
+                    worker.getDNI()
+            );
         }
     }
     private void validateWorker(Worker worker) {

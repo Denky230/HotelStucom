@@ -17,6 +17,10 @@ public class ViewHandler {
         return instance;
     }
 
+    public void soutUserInput(String input) {
+        System.out.println(input);
+    }
+
     public void soutNewRoom(Room room) {
         System.out.println("Room "+room.getId()+" added");
     }
@@ -26,7 +30,7 @@ public class ViewHandler {
     public void soutNewCustomer(Customer customer, Room room) {
         System.out.println("Customer "+customer.getDNI()+" assigned to "+room.getId());
     }
-    
+
     /**
      * Show User available commands and how to use them.
      * @param commands commands
@@ -39,7 +43,7 @@ public class ViewHandler {
         }
         System.err.print(sb);
     }
-    
+
     private String formatString(String string) {
         StringBuilder result = new StringBuilder();
         String[] formated = string.split("\n");

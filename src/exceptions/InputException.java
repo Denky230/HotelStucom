@@ -5,12 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 
 public class InputException extends MyException {
-    
+
     public enum Errors {
         INVALID_NUM_ARGS,
         COMMAND_NOT_FOUND
     }
-    
+
     public InputException(int code) {
         super(code);
     }
@@ -21,7 +21,7 @@ public class InputException extends MyException {
                 "Invalid number of arguments",
                 "Unknown command - Type ! to see available commands"
         );
-                
-        return messages;      
+
+        return messages;
     }
 }

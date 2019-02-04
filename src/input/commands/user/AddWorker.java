@@ -2,6 +2,7 @@
 package input.commands.user;
 
 import constants.Skill;
+import exceptions.MyException;
 import java.util.HashSet;
 import model.Worker;
 
@@ -12,7 +13,7 @@ public class AddWorker extends UserCommand {
     }
 
     @Override
-    public void call(String[] args) {
+    public void call(String[] args) throws MyException {
         String dni = args[0];
         String name = args[1];
         String inSkills[] = args[2].split(",");
