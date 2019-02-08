@@ -1,7 +1,7 @@
 
 package threads;
 
-import exceptions.InputException;
+import exceptions.MyException;
 import input.InputHandler;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -21,12 +21,11 @@ public class TicketHandler implements Runnable {
 
     @Override
     public void run() {
-
-        FileReader fr = null;
-        try {
-            fr = new FileReader(FILE_PATH);
+        
+        try (
+            FileReader fr = new FileReader(FILE_PATH);
             BufferedReader br = new BufferedReader(fr);
-
+        ) {
             String line;
             while ((line = br.readLine()) != null) {
 //                try {
@@ -34,20 +33,13 @@ public class TicketHandler implements Runnable {
                     System.out.println(line);
 //                    input.processCustomerInput(line);
 
-//                } catch (InputException e) {
+//                } catch (MyException e) {
 //                    System.out.println(e.getMessage());
 //                }
             }
 
         } catch (IOException | InterruptedException e) {
             System.out.println(e.getMessage());
-
-        } finally {
-            try {
-                fr.close();
-            } catch (IOException ex) {
-                System.out.println(ex.getMessage());
-            }
         }
     }
 }

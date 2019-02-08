@@ -1,7 +1,10 @@
 
 package input.commands.customer;
 
+import constants.Skill;
+import exceptions.RegistrationException;
 import input.Command;
+import java.util.ArrayList;
 
 public class Request extends Command {
 
@@ -10,7 +13,16 @@ public class Request extends Command {
     }
 
     @Override
-    public void call(String[] args) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void call(String[] args) throws RegistrationException {
+        String ID = args[0];
+        String[] inSkills = args[1].split(",");
+        
+        // Add Services
+        ArrayList<Skill> skills = new ArrayList<>();
+        for (String inSkill : inSkills) {
+            skills.add(Skill.getValueFromString(inSkill));
+        }
+        
+        manager.addRequest(ID, skills);
     }
 }

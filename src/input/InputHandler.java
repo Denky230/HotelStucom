@@ -9,7 +9,7 @@ import input.commands.customer.Request;
 import input.commands.user.AddRoom;
 import input.commands.user.AddWorker;
 import input.commands.user.Hotel;
-import input.commands.user.Reservation;
+import input.commands.user.AddCustomer;
 import input.commands.user.ShowCommands;
 import input.commands.user.Speed;
 import input.commands.user.UserCommand;
@@ -41,7 +41,7 @@ public class InputHandler {
         userCommands.add(new Speed(1, "SPEED"));
         userCommands.add(new AddRoom(2, "ROOM"));
         userCommands.add(new AddWorker(3, "WORKER"));
-        userCommands.add(new Reservation(2, "RESERVATION"));
+        userCommands.add(new AddCustomer(2, "RESERVATION"));
     }
     private void initCustomerCommands() {
         customerCommands = new ArrayList<>();
@@ -57,7 +57,9 @@ public class InputHandler {
         processInput(input, customerCommands);
     }
     private void processInput(String input, List commands) throws MyException {
+        // Por facilitar la correción
         ViewHandler.getInstance().soutUserInput(input);
+
         String[] in = input.split(" ");
 
         // First input is the command call, rest is arguments

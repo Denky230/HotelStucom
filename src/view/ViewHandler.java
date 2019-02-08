@@ -22,13 +22,17 @@ public class ViewHandler {
     }
 
     public void soutNewRoom(Room room) {
-        System.out.println("Room "+room.getId()+" added");
+        soutUserFeedback("Room "+room.getId()+" added");
     }
     public void soutNewWorker(Worker worker) {
-        System.out.println("Worker "+worker.getDNI()+" added");
+        soutUserFeedback("Worker "+worker.getDNI()+" added");
     }
     public void soutNewCustomer(Customer customer, Room room) {
-        System.out.println("Customer "+customer.getDNI()+" assigned to "+room.getId());
+        soutUserFeedback("Customer "+customer.getDNI()+" assigned to "+room.getId());
+    }
+    private void soutUserFeedback(String feedback) {
+        String formatedFeedback = "--> "+feedback+" <--";
+        System.out.println(formatedFeedback);
     }
 
     /**
@@ -43,7 +47,7 @@ public class ViewHandler {
         }
         System.err.print(sb);
     }
-
+    
     private String formatString(String string) {
         StringBuilder result = new StringBuilder();
         String[] formated = string.split("\n");

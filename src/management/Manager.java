@@ -169,9 +169,21 @@ public class Manager {
          * -    Check skills.size > 0
          */
     }
+    
+    private void assignWorkerToRoom(Worker worker, Room room) {
+        freeWorkers.remove(worker);
+        assignments.put(worker, room);
+    }
 
     /* --- CUSTOMERS --- */
 
+    /**
+     * Add new Customer with given parameters. Returns the Customer if successfully added.
+     * @param dni Customer DNI
+     * @param members Customer number of members
+     * @param requirements Room requirements
+     * @return Customer if added
+     */
     public Customer addCustomer(String dni, int members, HashSet<Service> requirements) {
         // Validate Customer
         Customer customer = new Customer(dni, members, requirements);
@@ -188,7 +200,7 @@ public class Manager {
     }
 
     public Room assignRoomToCustomer(Customer customer) {
-        // Get free Room with at least members capacity + meets requirements
+        // Get free Room with enough capacity + requirements met
         Room room = getRoomSuitableForCustomer(customer);
         if (room != null) {
             // Assign Customer to suitable Room
@@ -225,9 +237,10 @@ public class Manager {
         skillsRequested.forEach((Skill skillRequested) -> {
             Worker worker = getFreeWorkerBySkill(skillRequested);
             if (worker != null) {
-                // If Worker found, remove all matching Skills
+                // On Worker found, remove all matching Skills
                 skillsRequested.removeAll(worker.getSkills());
-                freeWorkers.remove(worker);
+                // Assign Worker to Room
+                assignWorkerToRoom(worker, room);
             }
         });
 
@@ -236,10 +249,7 @@ public class Manager {
     }
 
     /* --- HOTEL --- */
-
-    private void applyMoneyPenalty(MoneyPenalty penalty) {
-        setMoney(money - penalty.getCost());
-    }
+    
     public void startTicketHandler(String filePath) {
         Runnable ticketHandler = new TicketHandler(filePath, speed);
         Thread thread = new Thread(ticketHandler);
@@ -248,19 +258,19 @@ public class Manager {
         }
     }
 
-    public int getSpeed() {
-        return this.speed;
+    /**
+     * Modify hotel's capital. Use positive money to add and negative to subtract.
+     * @param money money quantity
+     */
+    private void moneyTransaction(int money) {
+        this.money += money;
     }
+    private void applyMoneyPenalty(MoneyPenalty penalty) {
+        moneyTransaction(-penalty.getCost());
+    }
+
     public void setSpeed(int speed) {
         this.speed = speed;
-    }
-    public int getMoney() {
-        return this.money;
-    }
-    public void setMoney(int money) {
-        if (money >= 0) {
-            this.money = money;
-        }
     }
 
     /* TEST */

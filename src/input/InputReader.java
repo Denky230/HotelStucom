@@ -1,13 +1,12 @@
 
 package input;
 
-import exceptions.InputException;
 import exceptions.MyException;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class InputReader {
 
@@ -17,11 +16,9 @@ public class InputReader {
     public final String TICKETS_FILE_PATH = INPUT_FOLDER_PATH + "inputOrders1.txt";
 
     private final InputHandler inputHandler;
-    private BufferedReader br;
-
+    
     private InputReader() {
         inputHandler = InputHandler.getInstance();
-        br = new BufferedReader(new InputStreamReader(System.in));
     }
     private static InputReader instance;
     public static InputReader getInstance() {
@@ -30,43 +27,27 @@ public class InputReader {
         return instance;
     }
 
+    /**
+     * Load initial hotel data and returns any possible errors.
+     * @throws IOException 
+     */
     public void loadHotelData() throws IOException {
-        // Set BufferedReader to read files
-        FileReader fr = new FileReader(HOTEL_FILE_PATH);
-        br = new BufferedReader(fr);
+        try (
+            FileReader fr = new FileReader(HOTEL_FILE_PATH);
+            BufferedReader br = new BufferedReader(fr);
+        ) {
+            // Load initial hotel data
+            String line;
+            while ((line = br.readLine()) != null) {
+                try {
+                    inputHandler.processUserInput(line);
 
-        String line;
-        while ((line = br.readLine()) != null) {
-            try {
-                inputHandler.processUserInput(line);
-
-            } catch (MyException e) {
-                System.out.println(e.getMessage());
-            } catch (RuntimeException e) {
-                System.out.println(e.getMessage());
+                } catch (MyException | RuntimeException e) {
+                    // Esto normalmente no iría aquí,
+                    // pero por facilitar la corrección...
+                    System.out.println(e.getMessage());
+                }
             }
         }
-
-        br.close();
-    }
-
-    public void readUserInput() throws IOException {
-        // Set BufferedReader to read user input
-        br = new BufferedReader(new InputStreamReader(System.in));
-
-        String line;
-        while (!(line = br.readLine()).equalsIgnoreCase("X")) {
-
-            try {
-                inputHandler.processUserInput(line);
-
-            } catch (MyException e) {
-                System.out.println(e.getMessage());
-            } catch (RuntimeException e) {
-                e.printStackTrace();
-            }
-        }
-
-        br.close();
     }
 }

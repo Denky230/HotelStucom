@@ -23,7 +23,7 @@ public abstract class MyException extends Exception {
         String errorMessage = errorMessages.get(code);
         errorMessage = String.format(errorMessage, value);
 
-        return "--> "+errorMessage+" <--";
+        return ">>> "+errorMessage+" <<<";
     }
 
     /**
