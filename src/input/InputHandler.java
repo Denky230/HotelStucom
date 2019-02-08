@@ -4,8 +4,8 @@ package input;
 import exceptions.InputException;
 import exceptions.MyException;
 import input.commands.customer.Leave;
-import input.commands.customer.Problem;
-import input.commands.customer.Request;
+import input.commands.customer.AddProblem;
+import input.commands.customer.AddRequest;
 import input.commands.user.AddRoom;
 import input.commands.user.AddWorker;
 import input.commands.user.Hotel;
@@ -45,8 +45,8 @@ public class InputHandler {
     }
     private void initCustomerCommands() {
         customerCommands = new ArrayList<>();
-        customerCommands.add(new Problem(1, "PROBLEM"));
-        customerCommands.add(new Request(2, "REQUEST"));
+        customerCommands.add(new AddProblem(1, "PROBLEM"));
+        customerCommands.add(new AddRequest(2, "REQUEST"));
         customerCommands.add(new Leave(2, "LEAVE"));
     }
 

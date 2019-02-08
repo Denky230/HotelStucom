@@ -6,9 +6,9 @@ import exceptions.RegistrationException;
 import input.Command;
 import java.util.ArrayList;
 
-public class Request extends Command {
+public class AddRequest extends Command {
 
-    public Request(int arguments, String callCode) {
+    public AddRequest(int arguments, String callCode) {
         super(arguments, callCode);
     }
 

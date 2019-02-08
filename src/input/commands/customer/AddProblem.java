@@ -3,9 +3,9 @@ package input.commands.customer;
 
 import input.Command;
 
-public class Problem extends Command {
+public class AddProblem extends Command {
 
-    public Problem(int arguments, String callCode) {
+    public AddProblem(int arguments, String callCode) {
         super(arguments, callCode);
     }
 
