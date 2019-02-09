@@ -11,6 +11,11 @@ public class Leave extends Command {
 
     @Override
     public void call(String[] args) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        String roomID = args[0];
+        // Remove "E" from money input if found
+        String moneyString = args[1].split("E")[0];
+        int money = Integer.parseInt(moneyString);
+        
+        manager.leave(roomID, money);
     }
 }

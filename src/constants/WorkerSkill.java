@@ -3,10 +3,10 @@ package constants;
 
 import exceptions.RegistrationException;
 
-public enum Skill {
+public enum WorkerSkill {
     MAINTENANCE, CLEANING, POOL, SPA, BAR, FOOD, LAUNDRY;
 
-    public static Skill getValueFromString(String skill) throws RegistrationException {
+    public static WorkerSkill getValueFromString(String skill) throws RegistrationException {
         switch (skill.toUpperCase().trim()) {
             case "MANTENIMIENTO":
                 return MAINTENANCE;

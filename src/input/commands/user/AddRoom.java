@@ -1,7 +1,7 @@
 
 package input.commands.user;
 
-import constants.Service;
+import constants.RoomService;
 import exceptions.RegistrationException;
 import java.util.HashSet;
 import model.Room;
@@ -16,7 +16,7 @@ public class AddRoom extends UserCommand {
     public void call(String[] args) throws RegistrationException {
         String id = args[0];
         int capacity = Integer.valueOf(args[1]);
-        HashSet<Service> services = new HashSet<>();
+        HashSet<RoomService> services = new HashSet<>();
 
         // Add Services if any was input
         if (args.length == 3) {
@@ -24,7 +24,7 @@ public class AddRoom extends UserCommand {
 
             // Add Services
             for (String inService : inServices) {
-                services.add(Service.getValueFromString(inService));
+                services.add(RoomService.getValueFromString(inService));
             }
         }
 

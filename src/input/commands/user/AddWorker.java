@@ -1,7 +1,7 @@
 
 package input.commands.user;
 
-import constants.Skill;
+import constants.WorkerSkill;
 import exceptions.RegistrationException;
 import java.util.HashSet;
 import model.Worker;
@@ -19,9 +19,9 @@ public class AddWorker extends UserCommand {
         String inSkills[] = args[2].split(",");
 
         // Add Skills
-        HashSet<Skill> skills = new HashSet<>();
+        HashSet<WorkerSkill> skills = new HashSet<>();
         for (String inSkill : inSkills) {
-            skills.add(Skill.getValueFromString(inSkill));
+            skills.add(WorkerSkill.getValueFromString(inSkill));
         }
 
         // Add new Worker

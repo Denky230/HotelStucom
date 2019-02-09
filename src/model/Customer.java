@@ -1,16 +1,16 @@
 
 package model;
 
-import constants.Service;
+import constants.RoomService;
 import java.util.HashSet;
 
 public class Customer {
 
     private String DNI;
     private int members;
-    private HashSet<Service> requirements;
+    private HashSet<RoomService> requirements;
 
-    public Customer(String DNI, int members, HashSet<Service> requirements) {
+    public Customer(String DNI, int members, HashSet<RoomService> requirements) {
         this.DNI = DNI;
         this.members = members;
         this.requirements = requirements;
@@ -22,7 +22,7 @@ public class Customer {
     public int getMembers() {
         return this.members;
     }
-    public HashSet<Service> getRequirements() {
+    public HashSet<RoomService> getRequirements() {
         return requirements;
     }
     
@@ -30,7 +30,7 @@ public class Customer {
     public String toString() {
         // Build requirements string
         StringBuilder reqs = new StringBuilder();
-        for (Service requirement : requirements) {
+        for (RoomService requirement : requirements) {
             reqs.append(requirement.name()).append("\n");
         }
         // Remove last "\n"

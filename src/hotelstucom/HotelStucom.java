@@ -25,18 +25,20 @@ public class HotelStucom {
             manager.startTicketHandler(inReader.TICKETS_FILE_PATH);
 
             // Read user input as Commands
-            try (
-                BufferedReader br = new BufferedReader(new InputStreamReader(System.in))
-            ) {
-                String line;
-                while (!(line = br.readLine()).equalsIgnoreCase("X")) {
+            try ( BufferedReader br = new BufferedReader(new InputStreamReader(System.in)) ) {
+
+                // Keep hotel going while money > 0
+                while (manager.getMoney() > 0) {
                     try {
-                        inHandler.processUserInput(line);
+                        inHandler.processUserInput(br.readLine());
                         
                     } catch (MyException | RuntimeException e) {
                         System.out.println(e.getMessage());
                     }
                 }
+
+                // We dead B O Y S
+                System.out.println("GAME OVAH");
             }
 
         } catch (IOException e) {

@@ -3,8 +3,9 @@ package management;
 
 import constants.MoneyPenalty;
 import constants.RoomState;
-import constants.Service;
-import constants.Skill;
+import constants.RoomService;
+import constants.WorkerSkill;
+import exceptions.HotelException;
 import exceptions.RegistrationException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,15 +23,16 @@ public class Manager {
     private int money;  // Hotel capital
 
     // ROOMS
-    private final TreeMap<Room, Customer> reservations; // Rooms sorted by ID
+    private final TreeMap<Room, Customer> roomAssignments; // Rooms sorted by ID
     // WORKERS
-    private final HashMap<Worker, Room> assignments;
+    private final HashMap<Worker, Room> workerAssignments;
     private final HashSet<Worker> freeWorkers;
 
     private Manager() {
         this.speed = 1000;
-        this.reservations = new TreeMap<>();
-        this.assignments = new HashMap<>();
+        this.money = 255;
+        this.roomAssignments = new TreeMap<>();
+        this.workerAssignments = new HashMap<>();
         this.freeWorkers = new HashSet<>();
     }
     private static Manager instance;
@@ -49,7 +51,7 @@ public class Manager {
      */
     private Room getRoomByID(String id) {
         // Get Room if exists
-        Room room = reservations.ceilingKey(new Room(id));
+        Room room = roomAssignments.ceilingKey(new Room(id));
         if (room != null) {
             return room;
         }
@@ -65,14 +67,14 @@ public class Manager {
      * @return Room if added.
      * @throws exceptions.RegistrationException
      */
-    public Room addRoom(String id, int capacity, HashSet<Service> services) throws RegistrationException {
+    public Room addRoom(String id, int capacity, HashSet<RoomService> services) throws RegistrationException {
         // Validate Room
         Room room = new Room(id, capacity, services);
         validateRoom(room);
 
         // Check for Room duplicate
-        if (!reservations.containsKey(room)) {
-            reservations.put(room, null);
+        if (!roomAssignments.containsKey(room)) {
+            roomAssignments.put(room, null);
             return room;
         } else {
             throw new RegistrationException(
@@ -92,14 +94,15 @@ public class Manager {
 
     private Room getRoomSuitableForCustomer(Customer customer) {
         ArrayList<Room> freeRooms = getFreeRoomsSortedByCapacity();
-        HashSet<Service> requirements = customer.getRequirements();
+        HashSet<RoomService> requirements = customer.getRequirements();
         int members = customer.getMembers();
 
         Room freeRoom = null;
-        // Look for free Room which capacity >= members and Services == requirements
+        // Look for free Room which
+        // capacity >= members and Services == requirements
         for (int i = members; i < freeRooms.size(); i++) {
             freeRoom = freeRooms.get(i);
-            HashSet<Service> services = freeRoom.getServices();
+            HashSet<RoomService> services = freeRoom.getServices();
             if (services.containsAll(requirements)) {
                 return freeRoom;
             }
@@ -111,7 +114,7 @@ public class Manager {
         ArrayList<Room> freeRooms = new ArrayList<>();
 
         // Add every free Room
-        reservations.forEach((Room room, Customer customer) -> {
+        roomAssignments.forEach((Room room, Customer customer) -> {
             if (customer == null) {
                 freeRooms.add(room);
             }
@@ -129,7 +132,7 @@ public class Manager {
 
     /* --- WORKERS --- */
 
-    private Worker getFreeWorkerBySkill(Skill skill) {
+    private Worker getFreeWorkerBySkill(WorkerSkill skill) {
         for (Worker worker : freeWorkers) {
             if (worker.getSkills().contains(skill))
                 return worker;
@@ -145,7 +148,7 @@ public class Manager {
      * @return Worker if added
      * @throws exceptions.RegistrationException
      */
-    public Worker addWorker(String dni, String name, HashSet<Skill> skills) throws RegistrationException {
+    public Worker addWorker(String dni, String name, HashSet<WorkerSkill> skills) throws RegistrationException {
         // Validate Worker
         Worker worker = new Worker(dni, name, skills);
         validateWorker(worker);
@@ -153,7 +156,7 @@ public class Manager {
         // Add new Worker if not a duplicate
         if (freeWorkers.add(worker)) {
             // If no duplicate, add Worker to Assignments
-            assignments.put(worker, null);
+            workerAssignments.put(worker, null);
             return worker;
         } else {
             throw new RegistrationException(
@@ -172,7 +175,7 @@ public class Manager {
     
     private void assignWorkerToRoom(Worker worker, Room room) {
         freeWorkers.remove(worker);
-        assignments.put(worker, room);
+        workerAssignments.put(worker, room);
     }
 
     /* --- CUSTOMERS --- */
@@ -184,7 +187,7 @@ public class Manager {
      * @param requirements Room requirements
      * @return Customer if added
      */
-    public Customer addCustomer(String dni, int members, HashSet<Service> requirements) {
+    public Customer addCustomer(String dni, int members, HashSet<RoomService> requirements) {
         // Validate Customer
         Customer customer = new Customer(dni, members, requirements);
         validateCustomer(customer);
@@ -199,53 +202,77 @@ public class Manager {
          */
     }
 
-    public Room assignRoomToCustomer(Customer customer) {
+    public Room assignRoomToCustomer(Customer customer) throws HotelException {
         // Get free Room with enough capacity + requirements met
         Room room = getRoomSuitableForCustomer(customer);
         if (room != null) {
             // Assign Customer to suitable Room
-            reservations.put(room, customer);
+            roomAssignments.put(room, customer);
             return room;
         } else {
             // Apply money penalty for no available Room
-            applyMoneyPenalty(MoneyPenalty.UNASSIGNED_CLIENT);
-            throw new RuntimeException("Couldn't assign the Customer");
+            applyMoneyPenalty(MoneyPenalty.UNASSIGNED_CUSTOMER);
+            throw new HotelException(
+                    HotelException.Errors.UNASSIGNED_CUSTOMER.ordinal(),
+                    String.valueOf(MoneyPenalty.UNASSIGNED_CUSTOMER.getCost())
+            );
         }
     }
 
-    /* --- TICKETS --- */
+    /* --- TICKETS --- */ // TO DO: Add user feedback
 
-    public void addProblem(String roomID) {
+    public void addProblem(String roomID) throws HotelException {
         // Get Room by given ID, if exists
         Room room = getRoomByID(roomID);
 
         // Get Room current Customer
-        Customer customer = reservations.get(room);
+        Customer customer = roomAssignments.get(room);
 
-        // Empty out Room + set it to BROKEN
-        reservations.put(room, null);
+        // Empty out Room + set state to BROKEN
+        roomAssignments.put(room, null);
         room.setState(RoomState.BROKEN);
 
         // Assign Customer new valid Room
         assignRoomToCustomer(customer);
     }
-    public void addRequest(String roomID, List<Skill> skillsRequested) {
+    public void addRequest(String roomID, List<WorkerSkill> skillsRequested) {
         // Get Room by ID, if exists
         Room room = getRoomByID(roomID);
 
         // Look for free Workers with requested SkillS
-        skillsRequested.forEach((Skill skillRequested) -> {
-            Worker worker = getFreeWorkerBySkill(skillRequested);
-            if (worker != null) {
-                // On Worker found, remove all matching Skills
-                skillsRequested.removeAll(worker.getSkills());
-                // Assign Worker to Room
-                assignWorkerToRoom(worker, room);
+        HashSet<WorkerSkill> coveredSkills = new HashSet<>();
+        skillsRequested.forEach((WorkerSkill skillRequested) -> {
+            if (!coveredSkills.contains(skillRequested)) {
+                Worker worker = getFreeWorkerBySkill(skillRequested);
+                if (worker != null) {
+                    // On Worker found, cover all matching Skills
+                    coveredSkills.addAll(worker.getSkills());
+                    // Assign Worker to Room
+                    assignWorkerToRoom(worker, room);
+                }
             }
         });
 
         // Store non-covered requests in Room pendingRequests
+        skillsRequested.removeAll(coveredSkills);
         room.getPendingRequests().addAll(skillsRequested);
+    }
+    public void leave(String roomID, int money) {
+        // Get Room by ID, if exists
+        Room room = getRoomByID(roomID);
+        
+        // Empty out Room + set state to UNCLEAN
+        roomAssignments.put(room, null);
+        room.setState(RoomState.UNCLEAN);
+        
+        // TO DO: Free any Worker assigned to Room
+        
+        // Calculate money gains / losses
+        // If there is any uncovered request, hotel loses half of money income
+        if (!room.getPendingRequests().isEmpty()) {
+            money *= -0.5;
+        }
+        moneyTransaction(money);
     }
 
     /* --- HOTEL --- */
@@ -263,7 +290,7 @@ public class Manager {
      * @param money money quantity
      */
     private void moneyTransaction(int money) {
-        this.money += money;
+        setMoney(this.money + money);
     }
     private void applyMoneyPenalty(MoneyPenalty penalty) {
         moneyTransaction(-penalty.getCost());
@@ -272,11 +299,18 @@ public class Manager {
     public void setSpeed(int speed) {
         this.speed = speed;
     }
+    public int getMoney() {
+        return this.money;
+    }
+    private void setMoney(int money) {
+        this.money = money;
+        System.out.println(money);
+    }
 
     /* TEST */
     public void soutRooms() {
         System.out.println("*** ROOMS ***");
-        reservations.forEach((key, value) -> {
+        roomAssignments.forEach((key, value) -> {
             String roomID = key.getId();
             String customerDNI = value != null ? value.getDNI() : "";
             System.out.println(
@@ -287,7 +321,7 @@ public class Manager {
     }
     public void soutAssignments() {
         System.out.println("*** ASSIGNMENTS ***");
-        assignments.forEach((key, value) -> {
+        workerAssignments.forEach((key, value) -> {
             String worker = key.getName();
             String room = value != null ? value.getId() : "";
             System.out.println(worker+" - "+room);
@@ -300,11 +334,5 @@ public class Manager {
             System.out.println(worker.toString());
         });
         System.out.println();
-    }
-    public void soutSpeed() {
-        System.out.println(speed);
-    }
-    public void soutMoney() {
-        System.out.println(money);
     }
 }

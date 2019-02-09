@@ -1,7 +1,7 @@
 
 package input.commands.customer;
 
-import constants.Skill;
+import constants.WorkerSkill;
 import exceptions.RegistrationException;
 import input.Command;
 import java.util.ArrayList;
@@ -18,9 +18,9 @@ public class AddRequest extends Command {
         String[] inSkills = args[1].split(",");
         
         // Add Services
-        ArrayList<Skill> skills = new ArrayList<>();
+        ArrayList<WorkerSkill> skills = new ArrayList<>();
         for (String inSkill : inSkills) {
-            skills.add(Skill.getValueFromString(inSkill));
+            skills.add(WorkerSkill.getValueFromString(inSkill));
         }
         
         manager.addRequest(ID, skills);

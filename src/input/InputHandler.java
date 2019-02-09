@@ -45,6 +45,7 @@ public class InputHandler {
     }
     private void initCustomerCommands() {
         customerCommands = new ArrayList<>();
+        customerCommands.add(new AddCustomer(2, "RESERVATION"));
         customerCommands.add(new AddProblem(1, "PROBLEM"));
         customerCommands.add(new AddRequest(2, "REQUEST"));
         customerCommands.add(new Leave(2, "LEAVE"));

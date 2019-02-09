@@ -3,7 +3,7 @@ package constants;
 
 public enum MoneyPenalty {
     
-    UNASSIGNED_CLIENT(250),
+    UNASSIGNED_CUSTOMER(250),
     UNSATISFIED_CLIENT(100);
     
     private final int cost;

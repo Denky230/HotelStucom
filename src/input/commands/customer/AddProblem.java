@@ -1,6 +1,7 @@
 
 package input.commands.customer;
 
+import exceptions.HotelException;
 import input.Command;
 
 public class AddProblem extends Command {
@@ -10,7 +11,7 @@ public class AddProblem extends Command {
     }
 
     @Override
-    public void call(String[] args) {
+    public void call(String[] args) throws HotelException {
         String roomID = args[0];
         manager.addProblem(roomID);
     }

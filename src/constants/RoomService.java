@@ -3,10 +3,10 @@ package constants;
 
 import exceptions.RegistrationException;
 
-public enum Service {
+public enum RoomService {
     TV, BALCONY, DOUBLEBED, JACUZZI, MINIBAR, TELEPHONE, SATELITE, SWEET;
 
-    public static Service getValueFromString(String service) throws RegistrationException {
+    public static RoomService getValueFromString(String service) throws RegistrationException {
         switch (service.toUpperCase().trim()) {
             case "TV":
                 return TV;
