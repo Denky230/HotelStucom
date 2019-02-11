@@ -21,6 +21,7 @@ public abstract class MyException extends Exception {
     public String getMessage() {
         // Get message corresponding to error
         String errorMessage = errorMessages.get(code);
+        // Format message with input value (if none was input, nothing happens)
         errorMessage = String.format(errorMessage, value);
 
         return ">>> "+errorMessage+" <<<";
